@@ -1,0 +1,26 @@
+{
+    "onlinerrealtpagesApp": {
+        "apartment" : {
+            "home": {
+                "title": "Apartments",
+                "createLabel": "Créer un nouveau Apartment",
+                "createOrEditLabel": "Créer ou éditer un Apartment",
+                "search": "Search for Apartment"
+            },
+            "created": "Un nouveau Apartment a été créé avec l'identifiant {{ param }}",
+            "updated": "Le Apartment avec l'identifiant {{ param }} a été mis à jour",
+            "deleted": "Le Apartment avec l'identifiant {{ param }} a été supprimé",
+            "delete": {
+                "question": "Etes-vous certain de vouloir supprimer le Apartment {{ id }} ?"
+            },
+            "detail": {
+                "title": "Apartment"
+            },
+            "apartmentId": "ApartmentId",
+            "created": "Created",
+            "updated": "Updated",
+            "url": "Url"
+        }
+    }
+}
+
