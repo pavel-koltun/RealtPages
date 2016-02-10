@@ -19,7 +19,8 @@
             "apartmentId": "ApartmentId",
             "created": "Created",
             "updated": "Updated",
-            "url": "Url"
+            "url": "Url",
+            "location": "Location"
         }
     }
 }

@@ -24,23 +24,24 @@
             <column name="apartment_id" type="bigint">
                 <constraints nullable="false" />
             </column>
-            
+
             <column name="created" type="timestamp">
                 <constraints nullable="false" />
             </column>
-            
+
             <column name="updated" type="timestamp">
                 <constraints nullable="false" />
             </column>
-            
+
             <column name="url" type="varchar(255)"/>
-            
+
+            <column name="location_id" type="bigint"/>
             <!-- jhipster-needle-liquibase-add-column - Jhipster will add columns here, do not remove-->
         </createTable>
         <dropDefaultValue tableName="apartment" columnName="created" columnDataType="datetime"/>
 
         <dropDefaultValue tableName="apartment" columnName="updated" columnDataType="datetime"/>
 
-        
+
     </changeSet>
 </databaseChangeLog>

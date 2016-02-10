@@ -6,6 +6,8 @@ import org.springframework.data.elasticsearch.annotations.Document;
 import javax.persistence.*;
 import javax.validation.constraints.*;
 import java.io.Serializable;
+import java.util.HashSet;
+import java.util.Set;
 import java.util.Objects;
 
 /**
@@ -24,20 +26,20 @@ public class Apartment implements Serializable {
     @Min(value = 0)
     @Column(name = "apartment_id", nullable = false)
     private Long apartmentId;
-
+    
     @NotNull
     @Column(name = "created", nullable = false)
     private ZonedDateTime created;
-
+    
     @NotNull
     @Column(name = "updated", nullable = false)
     private ZonedDateTime updated;
-
+    
     @Column(name = "url")
     private String url;
-
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "id", referencedColumnName = "id", insertable = false, updatable = false)
+    
+    @ManyToOne
+    @JoinColumn(name = "location_id")
     private Location location;
 
     public Long getId() {
@@ -51,7 +53,7 @@ public class Apartment implements Serializable {
     public Long getApartmentId() {
         return apartmentId;
     }
-
+    
     public void setApartmentId(Long apartmentId) {
         this.apartmentId = apartmentId;
     }
@@ -59,7 +61,7 @@ public class Apartment implements Serializable {
     public ZonedDateTime getCreated() {
         return created;
     }
-
+    
     public void setCreated(ZonedDateTime created) {
         this.created = created;
     }
@@ -67,7 +69,7 @@ public class Apartment implements Serializable {
     public ZonedDateTime getUpdated() {
         return updated;
     }
-
+    
     public void setUpdated(ZonedDateTime updated) {
         this.updated = updated;
     }
@@ -75,7 +77,7 @@ public class Apartment implements Serializable {
     public String getUrl() {
         return url;
     }
-
+    
     public void setUrl(String url) {
         this.url = url;
     }

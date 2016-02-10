@@ -1,10 +1,11 @@
 'use strict';
 
 angular.module('onlinerrealtpagesApp').controller('ApartmentDialogController',
-    ['$scope', '$stateParams', '$uibModalInstance', 'entity', 'Apartment',
-        function($scope, $stateParams, $uibModalInstance, entity, Apartment) {
+    ['$scope', '$stateParams', '$uibModalInstance', 'entity', 'Apartment', 'Location',
+        function($scope, $stateParams, $uibModalInstance, entity, Apartment, Location) {
 
         $scope.apartment = entity;
+        $scope.locations = Location.query();
         $scope.load = function(id) {
             Apartment.get({id : id}, function(result) {
                 $scope.apartment = result;

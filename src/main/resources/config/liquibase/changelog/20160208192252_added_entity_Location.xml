@@ -36,11 +36,11 @@
             <!-- jhipster-needle-liquibase-add-column - Jhipster will add columns here, do not remove-->
         </createTable>
 
-        <addForeignKeyConstraint baseTableName="apartment"
-                                 baseColumnNames="id"
-                                 constraintName="location_fk"
-                                 referencedTableName="location"
-                                 referencedColumnNames="id" />
+        <addForeignKeyConstraint baseColumnNames="location_id"
+                                 baseTableName="apartment"
+                                 constraintName="fk_apartment_location_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="location"/>
 
     </changeSet>
 </databaseChangeLog>

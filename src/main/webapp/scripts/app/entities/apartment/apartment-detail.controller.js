@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('onlinerrealtpagesApp')
-    .controller('ApartmentDetailController', function ($scope, $rootScope, $stateParams, entity, Apartment) {
+    .controller('ApartmentDetailController', function ($scope, $rootScope, $stateParams, entity, Apartment, Location) {
         $scope.apartment = entity;
         $scope.load = function (id) {
             Apartment.get({id: id}, function(result) {

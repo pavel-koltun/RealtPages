@@ -35,6 +35,7 @@ class="hidden-xs"                        translate="onlinerrealtpagesApp.apartme
                     <th jh-sort-by="created"><span translate="onlinerrealtpagesApp.apartment.created">Created</span> <span class="glyphicon glyphicon-sort"></span></th>
                     <th jh-sort-by="updated"><span translate="onlinerrealtpagesApp.apartment.updated">Updated</span> <span class="glyphicon glyphicon-sort"></span></th>
                     <th jh-sort-by="url"><span translate="onlinerrealtpagesApp.apartment.url">Url</span> <span class="glyphicon glyphicon-sort"></span></th>
+                    <th jh-sort-by="location.id"><span translate="onlinerrealtpagesApp.apartment.location">location</span> <span class="glyphicon glyphicon-sort"></span></th>
                     <th></th>
                 </tr>
             </thead>
@@ -45,6 +46,9 @@ class="hidden-xs"                        translate="onlinerrealtpagesApp.apartme
                     <td>{{apartment.created | date:'medium'}}</td>
                     <td>{{apartment.updated | date:'medium'}}</td>
                     <td>{{apartment.url}}</td>
+                    <td>
+                        <a ui-sref="location.detail({id:apartment.location.id})">{{apartment.location.id}}</a>
+                    </td>
                     <td class="text-right">
                         <div class="btn-group flex-btn-group-container">
                             <button type="submit"

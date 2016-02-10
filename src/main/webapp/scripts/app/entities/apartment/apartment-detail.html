@@ -42,6 +42,14 @@
                     <span class="form-control-static">{{apartment.url}}</span>
                 </td>
             </tr>
+            <tr>
+                <td>
+                    <span translate="onlinerrealtpagesApp.apartment.location">location</span>
+                </td>
+                <td>
+                    <a class="form-control-static" ui-sref="location.detail({id:apartment.location.id})">{{apartment.location.id}}</a>
+                </td>
+            </tr>
             </tbody>
         </table>
     </div>
