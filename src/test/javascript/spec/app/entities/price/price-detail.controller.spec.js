@@ -2,37 +2,35 @@
 
 describe('Controller Tests', function() {
 
-    describe('Apartment Detail Controller', function() {
+    describe('Price Detail Controller', function() {
         var $scope, $rootScope;
-        var MockEntity, MockApartment, MockLocation, MockPrice;
+        var MockEntity, MockPrice, MockApartment;
         var createController;
 
         beforeEach(inject(function($injector) {
             $rootScope = $injector.get('$rootScope');
             $scope = $rootScope.$new();
             MockEntity = jasmine.createSpy('MockEntity');
-            MockApartment = jasmine.createSpy('MockApartment');
-            MockLocation = jasmine.createSpy('MockLocation');
             MockPrice = jasmine.createSpy('MockPrice');
+            MockApartment = jasmine.createSpy('MockApartment');
             
 
             var locals = {
                 '$scope': $scope,
                 '$rootScope': $rootScope,
                 'entity': MockEntity ,
-                'Apartment': MockApartment,
-                'Location': MockLocation,
-                'Price': MockPrice
+                'Price': MockPrice,
+                'Apartment': MockApartment
             };
             createController = function() {
-                $injector.get('$controller')("ApartmentDetailController", locals);
+                $injector.get('$controller')("PriceDetailController", locals);
             };
         }));
 
 
         describe('Root Scope Listening', function() {
             it('Unregisters root scope listener upon scope destruction', function() {
-                var eventType = 'onlinerrealtpagesApp:apartmentUpdate';
+                var eventType = 'onlinerrealtpagesApp:priceUpdate';
 
                 createController();
                 expect($rootScope.$$listenerCount[eventType]).toEqual(1);

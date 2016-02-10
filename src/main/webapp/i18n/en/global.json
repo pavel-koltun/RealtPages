@@ -9,6 +9,7 @@
                 "main": "Entities",
                 "apartment": "Apartment",
                 "location": "Location",
+                "price": "Price",
                 "jhipster-needle-menu-add-entry": "JHipster will add additional entities here (do not translate!)"
             },
             "account": {

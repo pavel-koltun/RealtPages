@@ -6,6 +6,13 @@
             "otherEntityName": "location",
             "relationshipType": "many-to-one",
             "otherEntityRelationshipName": "apartment"
+        },
+        {
+            "relationshipId": 2,
+            "relationshipName": "price",
+            "otherEntityName": "price",
+            "relationshipType": "one-to-many",
+            "otherEntityRelationshipName": "apartment"
         }
     ],
     "fields": [

@@ -1,5 +1,6 @@
 package by.koltun.domain;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import java.time.ZonedDateTime;
 import org.springframework.data.elasticsearch.annotations.Document;
 
@@ -41,6 +42,10 @@ public class Apartment implements Serializable {
     @ManyToOne
     @JoinColumn(name = "location_id")
     private Location location;
+
+    @OneToMany(mappedBy = "apartment")
+    @JsonIgnore
+    private Set<Price> prices = new HashSet<>();
 
     public Long getId() {
         return id;
@@ -88,6 +93,14 @@ public class Apartment implements Serializable {
 
     public void setLocation(Location location) {
         this.location = location;
+    }
+
+    public Set<Price> getPrices() {
+        return prices;
+    }
+
+    public void setPrices(Set<Price> prices) {
+        this.prices = prices;
     }
 
     @Override

@@ -20,7 +20,8 @@
             "created": "Created",
             "updated": "Updated",
             "url": "Url",
-            "location": "Location"
+            "location": "Location",
+            "price": "Price"
         }
     }
 }

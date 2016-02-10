@@ -1,0 +1,45 @@
+{
+    "relationships": [
+        {
+            "relationshipId": 1,
+            "relationshipName": "apartment",
+            "otherEntityName": "apartment",
+            "relationshipType": "many-to-one",
+            "otherEntityField": "apartmentId"
+        }
+    ],
+    "fields": [
+        {
+            "fieldId": 1,
+            "fieldName": "priceUsd",
+            "fieldType": "BigDecimal",
+            "fieldValidateRules": [
+                "required",
+                "min"
+            ],
+            "fieldValidateRulesMin": 0
+        },
+        {
+            "fieldId": 2,
+            "fieldName": "priceRuble",
+            "fieldType": "BigDecimal",
+            "fieldValidateRules": [
+                "required",
+                "min"
+            ],
+            "fieldValidateRulesMin": 0
+        },
+        {
+            "fieldId": 3,
+            "fieldName": "created",
+            "fieldType": "ZonedDateTime",
+            "fieldValidateRules": [
+                "required"
+            ]
+        }
+    ],
+    "changelogDate": "20160210194816",
+    "dto": "no",
+    "service": "no",
+    "pagination": "no"
+}
