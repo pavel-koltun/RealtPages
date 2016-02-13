@@ -65,3 +65,17 @@ jhipster:
         contact:
         license:
         licenseUrl:
+
+# =====================================
+# Onliner properties
+# =====================================
+
+onliner:
+    rent:
+        urls:
+            lastCreated: https://ak.api.onliner.by/search/apartments?order=created_at:desc&page=
+            lastUpdated: https://ak.api.onliner.by/search/apartments?page=
+    sale:
+        urls:
+            lastCreated: https://pk.api.onliner.by/search/apartments?order=created_at:desc&page=
+            lastUpdated: https://pk.api.onliner.by/search/apartments?page=
