@@ -1,16 +1,21 @@
 package by.koltun.service.apartment;
 
 import by.koltun.domain.to.ApartmentsPage;
+import by.koltun.domain.to.realt.rent.ApartmentRent;
 import by.koltun.domain.to.realt.rent.ApartmentsRentPage;
 import by.koltun.domain.to.realt.sale.ApartmentsSalePage;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.core.env.Environment;
+import org.springframework.scheduling.annotation.Async;
+import org.springframework.security.access.method.P;
 import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestClientException;
 import org.springframework.web.client.RestTemplate;
 
 import javax.inject.Inject;
+import java.util.*;
+import java.util.concurrent.TimeUnit;
 
 /**
  * Сервис, реализующий запрос на rest-сервер
@@ -45,7 +50,7 @@ public class ApartmentsCommonService {
         }
     }
 
-    public void getLastCreatedRentApartments() {
+    public void getLastCreatedRentApartments() throws InterruptedException {
 
         String url = env.getProperty("onliner.rent.urls.lastCreated");
 
@@ -55,80 +60,84 @@ public class ApartmentsCommonService {
             return;
         }
 
-        try {
+        LOGGER.info("The update of last created rent apartments started.");
 
-            int numberOfPages = getNumberOfPages(url, ApartmentsRentPage.class);
+        Optional<ApartmentsRentPage> pageWithInfo = getPage(url, 1, ApartmentsRentPage.class);
 
-            if (numberOfPages > 0) {
+        if (pageWithInfo.isPresent()) {
 
-                ApartmentsRentPage page = getPage(url, 1, ApartmentsRentPage.class);
+            int totalNumberOfElements = pageWithInfo.get().getTotal();
 
-                LOGGER.info("The Rent page: {}", page);
-                LOGGER.info("Total pages: {}", numberOfPages);
+            //TODO remove. Test feature.
+            int totalNumberOfPages = 10;// pageWithInfo.get().getPage().getLast();
+            int pageNumber = totalNumberOfPages;
+
+            if (totalNumberOfPages > 0) {
+
+                Set<ApartmentRent> rentApartments = new HashSet<>();
+
+                do {
+
+                    LOGGER.info("Processing {} rent page.", pageNumber);
+
+                    Optional<ApartmentsRentPage> page = getPage(url, pageNumber, ApartmentsRentPage.class);
+
+                    if (page.isPresent()) {
+
+                        rentApartments.addAll(page.get().getApartments());
+
+                        int updatedTotalNumberOfElements = page.get().getTotal();
+
+                        int numberOfAddedApartments = updatedTotalNumberOfElements - totalNumberOfElements;
+
+                        if (numberOfAddedApartments > 0) {
+
+                            int numberOfPagesToReadAgain = 1 + numberOfAddedApartments % page.get().getPage().getLimit();
+
+                            pageNumber += numberOfPagesToReadAgain;
+
+                        } else {
+
+                            pageNumber--;
+                        }
+
+                        totalNumberOfElements = updatedTotalNumberOfElements;
+                    } else {
+
+                        pageNumber--;
+                    }
+
+                    TimeUnit.SECONDS.sleep(10);
+                } while (pageNumber > 0);
+
+                LOGGER.info("Total apartments found: {}", rentApartments.size());
             } else {
 
-                LOGGER.error("Unable to get number of pages from {}", url);
+                LOGGER.error("There are no pages found with {}", url);
             }
-        } catch (RestClientException e) {
-
-            LOGGER.error("An exception occurred while consuming {}", url);
-            LOGGER.error("Exception is:", e);
         }
     }
 
-    /**
-     * Получение общего количества страниц.
-     * @param url Адрес сервиса аренды {@link ApartmentsRentPage} либо продажи {@link ApartmentsSalePage}.
-     * @return Число страниц, либо {@code 0} если число страниц не может быть определено.
-     */
-    private <T extends ApartmentsPage> int getNumberOfPages(String url, Class<T> clazz) {
+    private <T extends ApartmentsPage> Optional<T> getPage(String url, int pageNumber, Class<T> clazz) {
 
         if (url == null) {
 
             throw new IllegalArgumentException("Url can't be null.");
         }
 
-        int result = 0;
-
-        try {
-
-            RestTemplate restTemplate = new RestTemplate();
-
-            ApartmentsPage apartmentsPage = restTemplate.getForObject(url, clazz);
-
-            if (apartmentsPage != null && apartmentsPage.getPage() != null) {
-
-                result = apartmentsPage.getPage().getLast();
-            }
-        } catch (RestClientException e) {
-
-            LOGGER.error("An exception occurred while consuming {}", url);
-            LOGGER.error("Exception is:", e);
-        }
-
-        return result;
-    }
-
-    private <T extends ApartmentsPage> T getPage(String url, int pageNumber, Class<T> clazz) {
-
-        if (url == null) {
-
-            throw new IllegalArgumentException("Url can't be null.");
-        }
-
-        T page = null;
+        T result = null;
 
         try {
 
             RestTemplate template = new RestTemplate();
 
-            page = template.getForObject(url, clazz);
+            result = template.getForObject(url + pageNumber, clazz);
         } catch (RestClientException e) {
 
             LOGGER.error("Failed to get page number {} from url: {}", pageNumber, url);
             LOGGER.error("Exception is:", e);
         }
 
-        return page;
+        return Optional.ofNullable(result);
     }
 }
