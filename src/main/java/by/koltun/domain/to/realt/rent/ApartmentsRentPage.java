@@ -25,4 +25,11 @@ public class ApartmentsRentPage extends ApartmentsPage {
     public void setApartments(List<ApartmentRent> apartments) {
         this.apartments = apartments;
     }
+
+    @Override
+    public String toString() {
+        return "ApartmentsRentPage { " +
+            "apartments on page = " + (apartments != null ? apartments.size() : 0) + " " +
+            "} " + super.toString();
+    }
 }

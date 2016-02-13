@@ -19,4 +19,11 @@ public class Contact {
     public void setOwner(Boolean owner) {
         isOwner = owner;
     }
+
+    @Override
+    public String toString() {
+        return "Contact{" +
+            "isOwner=" + isOwner +
+            '}';
+    }
 }

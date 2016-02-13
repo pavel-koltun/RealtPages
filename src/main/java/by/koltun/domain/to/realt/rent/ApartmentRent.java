@@ -3,6 +3,8 @@ package by.koltun.domain.to.realt.rent;
 import by.koltun.domain.to.Apartment;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
+import java.util.Objects;
+
 /**
  * Арендуемое помещение
  */
@@ -28,5 +30,14 @@ public class ApartmentRent extends Apartment {
 
     public void setContact(Contact contact) {
         this.contact = contact;
+    }
+
+    @Override
+    public String toString() {
+
+        return "ApartmentRent{" +
+            "rentType='" + rentType + '\'' +
+            ", contact=" + contact +
+            "} " + super.toString();
     }
 }

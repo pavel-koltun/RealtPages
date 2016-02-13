@@ -35,4 +35,13 @@ public class Area {
     public void setKitchen(Double kitchen) {
         this.kitchen = kitchen;
     }
+
+    @Override
+    public String toString() {
+        return "Area{" +
+            "total=" + total +
+            ", living=" + living +
+            ", kitchen=" + kitchen +
+            '}';
+    }
 }

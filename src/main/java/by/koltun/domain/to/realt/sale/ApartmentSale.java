@@ -70,4 +70,16 @@ public class ApartmentSale extends Apartment {
     public void setSeller(Seller seller) {
         this.seller = seller;
     }
+
+    @Override
+    public String toString() {
+        return "ApartmentSale{" +
+            "isResale=" + isResale +
+            ", rooms=" + rooms +
+            ", floor=" + floor +
+            ", floors=" + floors +
+            ", area=" + area +
+            ", seller=" + seller +
+            "} " + super.toString();
+    }
 }

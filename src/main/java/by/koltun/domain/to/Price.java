@@ -29,4 +29,12 @@ public class Price {
     public void setByr(BigDecimal byr) {
         this.byr = byr;
     }
+
+    @Override
+    public String toString() {
+        return "Price{" +
+            "usd=" + usd +
+            ", byr=" + byr +
+            '}';
+    }
 }

@@ -34,4 +34,14 @@ public abstract class ApartmentsPage {
     public void setTotal(int total) {
         this.total = total;
     }
+
+    @Override
+    public String toString() {
+        return "ApartmentsPage{" +
+            "page=" + page +
+            ", total=" + total +
+            '}';
+    }
+
+
 }

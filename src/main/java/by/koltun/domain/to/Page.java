@@ -44,4 +44,14 @@ public class Page {
     public void setLast(int last) {
         this.last = last;
     }
+
+    @Override
+    public String toString() {
+        return "Page { " +
+            "limit=" + limit +
+            ", items=" + items +
+            ", current=" + current +
+            ", last=" + last +
+            '}';
+    }
 }

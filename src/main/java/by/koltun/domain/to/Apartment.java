@@ -8,6 +8,7 @@ import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 
 import java.util.Date;
+import java.util.Objects;
 
 import static com.fasterxml.jackson.annotation.JsonTypeInfo.*;
 import static com.fasterxml.jackson.annotation.JsonSubTypes.*;
@@ -86,5 +87,32 @@ public abstract class Apartment {
 
     public void setLocation(Location location) {
         this.location = location;
+    }
+
+    @Override
+    public String toString() {
+
+        return "Apartment{" +
+            "apartmentId=" + apartmentId +
+            ", created=" + created +
+            ", updated=" + updated +
+            ", url='" + url + '\'' +
+            ", price=" + price +
+            ", location=" + location +
+            '}';
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Apartment apartment = (Apartment) o;
+        return Objects.equals(apartmentId, apartment.apartmentId) &&
+            Objects.equals(url, apartment.url);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(apartmentId, url);
     }
 }

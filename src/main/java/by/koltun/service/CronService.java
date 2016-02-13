@@ -14,9 +14,9 @@ public class CronService {
     @Autowired private ApartmentsCommonService apartmentsCommonService;
 
 
-    @Scheduled(cron = "*/30 * * * * *")
+    @Scheduled(cron = "*/20 * * * * *")
     public void receiveLastRentApartments() {
 
-        apartmentsCommonService.getLastRentApartments();
+        apartmentsCommonService.getLastCreatedRentApartments();
     }
 }
