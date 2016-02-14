@@ -1,0 +1,56 @@
+
+<form name="editForm" role="form" novalidate ng-submit="save()" show-validation>
+
+    <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true"
+                ng-click="clear()">&times;</button>
+        <h4 class="modal-title" id="myApartmentRentLabel" translate="onlinerrealtpagesApp.apartmentRent.home.createOrEditLabel">Create or edit a ApartmentRent</h4>
+    </div>
+    <div class="modal-body">
+        <jh-alert-error></jh-alert-error>
+        <div class="form-group">
+            <label for="id" translate="global.field.id">ID</label>
+            <input type="text" class="form-control" id="id" name="id"
+                    ng-model="apartmentRent.id" readonly />
+        </div>
+        <div class="form-group">
+            <label class="control-label" translate="onlinerrealtpagesApp.apartmentRent.type" for="field_type">Type</label>
+            <select class="form-control" name="type" ng-model="apartmentRent.type" id="field_type" required>
+                <option value="ROOM" translate="onlinerrealtpagesApp.RentType.ROOM">ROOM</option>
+                <option value="ONE_ROOM" translate="onlinerrealtpagesApp.RentType.ONE_ROOM">ONE_ROOM</option>
+                <option value="TWO_ROOMS" translate="onlinerrealtpagesApp.RentType.TWO_ROOMS">TWO_ROOMS</option>
+                <option value="THREE_ROOMS" translate="onlinerrealtpagesApp.RentType.THREE_ROOMS">THREE_ROOMS</option>
+                <option value="FOUR_ROOMS" translate="onlinerrealtpagesApp.RentType.FOUR_ROOMS">FOUR_ROOMS</option>
+                <option value="FIVE_ROOMS" translate="onlinerrealtpagesApp.RentType.FIVE_ROOMS">FIVE_ROOMS</option>
+                <option value="SIX_ROOMS" translate="onlinerrealtpagesApp.RentType.SIX_ROOMS">SIX_ROOMS</option>
+            </select>
+            <div ng-show="editForm.type.$invalid">
+                <p class="help-block"
+                    ng-show="editForm.type.$error.required" translate="entity.validation.required">
+                    This field is required.
+                </p>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="control-label" translate="onlinerrealtpagesApp.apartmentRent.isOwner" for="field_isOwner">IsOwner</label>
+            <input type="checkbox" class="form-control" name="isOwner" id="field_isOwner"
+                    ng-model="apartmentRent.isOwner"
+                     />
+            <div ng-show="editForm.isOwner.$invalid">
+                <p class="help-block"
+                    ng-show="editForm.isOwner.$error.required" translate="entity.validation.required">
+                    This field is required.
+                </p>
+            </div>
+        </div>
+
+    </div>
+    <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal" ng-click="clear()">
+            <span class="glyphicon glyphicon-ban-circle"></span>&nbsp;<span translate="entity.action.cancel">Cancel</span>
+        </button>
+        <button type="submit" ng-disabled="editForm.$invalid || isSaving" class="btn btn-primary">
+            <span class="glyphicon glyphicon-save"></span>&nbsp;<span translate="entity.action.save">Save</span>
+        </button>
+    </div>
+</form>

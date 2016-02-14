@@ -1,9 +1,13 @@
 package by.koltun.service.apartment;
 
+import by.koltun.domain.Location;
+import by.koltun.domain.Price;
+import by.koltun.domain.enumeration.RentType;
 import by.koltun.domain.to.ApartmentsPage;
 import by.koltun.domain.to.realt.rent.ApartmentRent;
 import by.koltun.domain.to.realt.rent.ApartmentsRentPage;
 import by.koltun.domain.to.realt.sale.ApartmentsSalePage;
+import by.koltun.repository.ApartmentRentRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.core.env.Environment;
@@ -14,8 +18,12 @@ import org.springframework.web.client.RestClientException;
 import org.springframework.web.client.RestTemplate;
 
 import javax.inject.Inject;
+import java.time.LocalDate;
+import java.time.ZoneId;
+import java.time.ZonedDateTime;
 import java.util.*;
 import java.util.concurrent.TimeUnit;
+import java.util.stream.Collectors;
 
 /**
  * Сервис, реализующий запрос на rest-сервер
@@ -26,6 +34,8 @@ public class ApartmentsCommonService {
     private static final Logger LOGGER = LoggerFactory.getLogger(ApartmentsCommonService.class);
 
     @Inject private Environment env;
+
+    @Inject private ApartmentRentRepository apartmentRentRepository;
 
     public void getLastUpdatedSaleApartments() {
 
@@ -69,7 +79,7 @@ public class ApartmentsCommonService {
             int totalNumberOfElements = pageWithInfo.get().getTotal();
 
             //TODO remove. Test feature.
-            int totalNumberOfPages = 10;// pageWithInfo.get().getPage().getLast();
+            int totalNumberOfPages = 1;// pageWithInfo.get().getPage().getLast();
             int pageNumber = totalNumberOfPages;
 
             if (totalNumberOfPages > 0) {
@@ -111,6 +121,36 @@ public class ApartmentsCommonService {
                 } while (pageNumber > 0);
 
                 LOGGER.info("Total apartments found: {}", rentApartments.size());
+
+                Set<by.koltun.domain.ApartmentRent> apartmentsToSave = rentApartments.stream().map(a -> {
+                    by.koltun.domain.ApartmentRent apartment = new by.koltun.domain.ApartmentRent();
+
+                    apartment.setApartmentId(a.getApartmentId());
+                    apartment.setType(RentType.ROOM); //TODO
+                    apartment.setIsOwner(a.getContact().getOwner());
+
+                    apartment.setUrl(a.getUrl());
+                    apartment.setCreated(ZonedDateTime.from(a.getCreated().toInstant().atZone(ZoneId.of("UTC"))));
+                    apartment.setUpdated(ZonedDateTime.from(a.getUpdated().toInstant().atZone(ZoneId.of("UTC"))));
+
+                    Location location = new Location();
+                    location.setAddress(a.getLocation().getAddress());
+                    location.setLatitude(a.getLocation().getLatitude());
+                    location.setLongitude(a.getLocation().getLongitude());
+
+                    apartment.setLocation(location);
+
+                    Price price = new Price();
+                    price.setPriceRuble(a.getPrice().getByr());
+                    price.setPriceUsd(a.getPrice().getUsd());
+                    price.setCreated(a.getCreated().toInstant().atZone(ZoneId.of("UTC")));
+
+                    apartment.setPrice(price);
+
+                    return apartment;
+                }).collect(Collectors.toSet());
+
+                apartmentRentRepository.save(apartmentsToSave);
             } else {
 
                 LOGGER.error("There are no pages found with {}", url);

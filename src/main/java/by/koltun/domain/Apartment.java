@@ -17,6 +17,7 @@ import java.util.Objects;
 @Entity
 @Table(name = "apartment")
 @Document(indexName = "apartment")
+@Inheritance(strategy = InheritanceType.JOINED)
 public class Apartment implements Serializable {
 
     @Id
@@ -27,23 +28,23 @@ public class Apartment implements Serializable {
     @Min(value = 0)
     @Column(name = "apartment_id", nullable = false)
     private Long apartmentId;
-    
+
     @NotNull
     @Column(name = "created", nullable = false)
     private ZonedDateTime created;
-    
+
     @NotNull
     @Column(name = "updated", nullable = false)
     private ZonedDateTime updated;
-    
+
     @Column(name = "url")
     private String url;
-    
-    @ManyToOne
+
+    @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "location_id")
     private Location location;
 
-    @OneToMany(mappedBy = "apartment")
+    @OneToMany(mappedBy = "apartment", cascade = CascadeType.ALL)
     @JsonIgnore
     private Set<Price> prices = new HashSet<>();
 
@@ -58,7 +59,7 @@ public class Apartment implements Serializable {
     public Long getApartmentId() {
         return apartmentId;
     }
-    
+
     public void setApartmentId(Long apartmentId) {
         this.apartmentId = apartmentId;
     }
@@ -66,7 +67,7 @@ public class Apartment implements Serializable {
     public ZonedDateTime getCreated() {
         return created;
     }
-    
+
     public void setCreated(ZonedDateTime created) {
         this.created = created;
     }
@@ -74,7 +75,7 @@ public class Apartment implements Serializable {
     public ZonedDateTime getUpdated() {
         return updated;
     }
-    
+
     public void setUpdated(ZonedDateTime updated) {
         this.updated = updated;
     }
@@ -82,7 +83,7 @@ public class Apartment implements Serializable {
     public String getUrl() {
         return url;
     }
-    
+
     public void setUrl(String url) {
         this.url = url;
     }
@@ -101,6 +102,10 @@ public class Apartment implements Serializable {
 
     public void setPrices(Set<Price> prices) {
         this.prices = prices;
+    }
+
+    public void setPrice(Price price) {
+        this.prices.add(price);
     }
 
     @Override

@@ -1,0 +1,26 @@
+{
+    "relationships": [],
+    "fields": [
+        {
+            "fieldId": 1,
+            "fieldName": "type",
+            "fieldType": "RentType",
+            "fieldValues": "ROOM, ONE_ROOM, TWO_ROOMS, THREE_ROOMS, FOUR_ROOMS, FIVE_ROOMS, SIX_ROOMS",
+            "fieldValidateRules": [
+                "required"
+            ]
+        },
+        {
+            "fieldId": 2,
+            "fieldName": "isOwner",
+            "fieldType": "Boolean",
+            "fieldValidateRules": [
+                "required"
+            ]
+        }
+    ],
+    "changelogDate": "20160213220552",
+    "dto": "no",
+    "service": "no",
+    "pagination": "pager"
+}
