@@ -26,15 +26,15 @@ public class Price implements Serializable {
     @NotNull
     @Column(name = "price_usd", precision=10, scale=2, nullable = false)
     private BigDecimal priceUsd;
-    
+
     @NotNull
     @Column(name = "price_ruble", precision=10, scale=2, nullable = false)
     private BigDecimal priceRuble;
-    
+
     @NotNull
     @Column(name = "created", nullable = false)
     private ZonedDateTime created;
-    
+
     @ManyToOne
     @JoinColumn(name = "apartment_id")
     private Apartment apartment;
@@ -50,7 +50,7 @@ public class Price implements Serializable {
     public BigDecimal getPriceUsd() {
         return priceUsd;
     }
-    
+
     public void setPriceUsd(BigDecimal priceUsd) {
         this.priceUsd = priceUsd;
     }
@@ -58,7 +58,7 @@ public class Price implements Serializable {
     public BigDecimal getPriceRuble() {
         return priceRuble;
     }
-    
+
     public void setPriceRuble(BigDecimal priceRuble) {
         this.priceRuble = priceRuble;
     }
@@ -66,7 +66,7 @@ public class Price implements Serializable {
     public ZonedDateTime getCreated() {
         return created;
     }
-    
+
     public void setCreated(ZonedDateTime created) {
         this.created = created;
     }
@@ -81,22 +81,16 @@ public class Price implements Serializable {
 
     @Override
     public boolean equals(Object o) {
-        if (this == o) {
-            return true;
-        }
-        if (o == null || getClass() != o.getClass()) {
-            return false;
-        }
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
         Price price = (Price) o;
-        if(price.id == null || id == null) {
-            return false;
-        }
-        return Objects.equals(id, price.id);
+        return Objects.equals(priceUsd, price.priceUsd) &&
+            Objects.equals(apartment, price.apartment);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hashCode(id);
+        return Objects.hash(priceUsd, apartment);
     }
 
     @Override

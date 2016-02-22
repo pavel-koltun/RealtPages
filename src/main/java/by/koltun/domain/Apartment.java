@@ -42,7 +42,7 @@ public class Apartment implements Serializable {
     @JoinColumn(name = "location_id")
     private Location location;
 
-    @OneToMany(mappedBy = "apartment")
+    @OneToMany(mappedBy = "apartment", cascade = {CascadeType.MERGE, CascadeType.PERSIST})
     @JsonIgnore
     private Set<Price> prices = new HashSet<>();
 
@@ -111,15 +111,15 @@ public class Apartment implements Serializable {
             return false;
         }
         Apartment apartment = (Apartment) o;
-        if(apartment.id == null || id == null) {
+        if(apartment.apartmentId == null || apartmentId == null) {
             return false;
         }
-        return Objects.equals(id, apartment.id);
+        return Objects.equals(apartmentId, apartment.apartmentId);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hashCode(id);
+        return Objects.hashCode(apartmentId);
     }
 
     @Override
