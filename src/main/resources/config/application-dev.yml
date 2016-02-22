@@ -20,8 +20,8 @@ spring:
             enabled: false # we use Grunt + BrowserSync for livereload
     datasource:
         driver-class-name: com.mysql.jdbc.jdbc2.optional.MysqlDataSource
-        url: jdbc:mysql://localhost:3306/OnlinerRealtPages?useUnicode=true&characterEncoding=utf8
-        name: OnlinerRealtPages
+        url: jdbc:mysql://localhost:3306/OnlinerRealtPagesTest?useUnicode=true&characterEncoding=utf8
+        name: OnlinerRealtPagesTest
         username: jhipster
         password: jhipster
     jpa:
