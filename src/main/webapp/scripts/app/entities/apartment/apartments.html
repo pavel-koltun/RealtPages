@@ -1,0 +1,79 @@
+<div>
+    <h2 translate="onlinerrealtpagesApp.apartment.home.title">Apartments</h2>
+    <jh-alert></jh-alert>
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-xs-4 no-padding-left">
+                <button class="btn btn-primary" ui-sref="apartment.new" >
+                    <span class="glyphicon glyphicon-plus"></span>
+                    <span 
+class="hidden-xs"                        translate="onlinerrealtpagesApp.apartment.home.createLabel">Create new Apartment
+                    </span>
+                </button>
+            </div>
+            <div class="col-xs-8 no-padding-right">
+                <form name="searchForm" class="form-inline">
+                    <div class="input-group pull-right" >
+                        <input type="text" class="form-control" ng-model="searchQuery" id="searchQuery" placeholder="{{ 'onlinerrealtpagesApp.apartment.home.search' | translate }}">
+                        <span  class="input-group-btn width-min" >
+                            <button class="btn btn-info" ng-click="search()">
+                                <span class="glyphicon glyphicon-search"></span>
+                            </button>
+                        </span>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+    <br/>
+    <div class="table-responsive">
+        <table class="jh-table table table-striped">
+            <thead>
+                <tr jh-sort="predicate" ascending="reverse" callback="loadAll()">
+                    <th jh-sort-by="id"><span translate="global.field.id">ID</span> <span class="glyphicon glyphicon-sort"></span></th>
+                    <th jh-sort-by="apartmentId"><span translate="onlinerrealtpagesApp.apartment.apartmentId">ApartmentId</span> <span class="glyphicon glyphicon-sort"></span></th>
+                    <th jh-sort-by="created"><span translate="onlinerrealtpagesApp.apartment.created">Created</span> <span class="glyphicon glyphicon-sort"></span></th>
+                    <th jh-sort-by="updated"><span translate="onlinerrealtpagesApp.apartment.updated">Updated</span> <span class="glyphicon glyphicon-sort"></span></th>
+                    <th jh-sort-by="url"><span translate="onlinerrealtpagesApp.apartment.url">Url</span> <span class="glyphicon glyphicon-sort"></span></th>
+                    <th jh-sort-by="location.id"><span translate="onlinerrealtpagesApp.apartment.location">location</span> <span class="glyphicon glyphicon-sort"></span></th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr ng-repeat="apartment in apartments track by apartment.id">
+                    <td><a ui-sref="apartment.detail({id:apartment.id})">{{apartment.id}}</a></td>
+                    <td>{{apartment.apartmentId}}</td>
+                    <td>{{apartment.created | date:'medium'}}</td>
+                    <td>{{apartment.updated | date:'medium'}}</td>
+                    <td>{{apartment.url}}</td>
+                    <td>
+                        <a ui-sref="location.detail({id:apartment.location.id})">{{apartment.location.id}}</a>
+                    </td>
+                    <td class="text-right">
+                        <div class="btn-group flex-btn-group-container">
+                            <button type="submit"
+                                    ui-sref="apartment.detail({id:apartment.id})"
+                                    class="btn btn-info btn-sm"> 
+                                <span class="glyphicon glyphicon-eye-open"></span>
+                                <span class="hidden-xs hidden-sm" translate="entity.action.view"></span>
+                            </button>
+                            <button type="submit"
+                                    ui-sref="apartment.edit({id:apartment.id})"
+                                    class="btn btn-primary btn-sm">
+                                <span class="glyphicon glyphicon-pencil"></span>
+                                <span class="hidden-xs hidden-sm" translate="entity.action.edit"></span>
+                            </button>
+                            <button type="submit"
+                                    ui-sref="apartment.delete({id:apartment.id})"
+                                    class="btn btn-danger btn-sm">                                    
+                                <span class="glyphicon glyphicon-remove-circle"></span>
+                                <span class="hidden-xs hidden-sm" translate="entity.action.delete"></span>
+                            </button>
+                        </div>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+    <uib-pager total-items="totalItems" ng-model="page" ng-change="loadAll()"></uib-pager>
+</div>

@@ -1,0 +1,53 @@
+{
+  "relationships": [
+    {
+      "relationshipId": 1,
+      "relationshipName": "location",
+      "otherEntityName": "location",
+      "relationshipType": "many-to-one",
+      "otherEntityField": "id"
+    },
+    {
+      "relationshipId": 2,
+      "relationshipName": "prices",
+      "otherEntityName": "price",
+      "relationshipType": "one-to-many",
+      "otherEntityRelationshipName": "apartment"
+    }
+  ],
+  "fields": [
+    {
+      "fieldId": 1,
+      "fieldName": "apartmentId",
+      "fieldType": "Long",
+      "fieldValidateRules": [
+        "required"
+      ]
+    },
+    {
+      "fieldId": 2,
+      "fieldName": "created",
+      "fieldType": "ZonedDateTime",
+      "fieldValidateRules": [
+        "required"
+      ]
+    },
+    {
+      "fieldId": 3,
+      "fieldName": "updated",
+      "fieldType": "ZonedDateTime",
+      "fieldValidateRules": [
+        "required"
+      ]
+    },
+    {
+      "fieldId": 4,
+      "fieldName": "url",
+      "fieldType": "String"
+    }
+  ],
+  "changelogDate": "20160222192225",
+  "dto": "no",
+  "pagination": "pager",
+  "service": "no"
+}
