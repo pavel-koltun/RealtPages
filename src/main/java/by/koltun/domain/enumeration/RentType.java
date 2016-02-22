@@ -10,5 +10,6 @@ public enum RentType {
     THREE_ROOMS,
     FOUR_ROOMS,
     FIVE_ROOMS,
-    SIX_ROOMS
+    SIX_ROOMS,
+    UNKNOWN
 }

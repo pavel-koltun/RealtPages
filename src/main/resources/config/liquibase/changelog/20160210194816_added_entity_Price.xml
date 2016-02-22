@@ -33,7 +33,9 @@
                 <constraints nullable="false" />
             </column>
 
-            <column name="apartment_id" type="bigint"/>
+            <column name="apartment_id" type="bigint">
+                <constraints nullable="false" />
+            </column>
             <!-- jhipster-needle-liquibase-add-column - Jhipster will add columns here, do not remove-->
         </createTable>
         <dropDefaultValue tableName="price" columnName="created" columnDataType="datetime"/>
@@ -42,7 +44,7 @@
         <addForeignKeyConstraint baseColumnNames="apartment_id"
                                  baseTableName="price"
                                  constraintName="fk_price_apartment_id"
-                                 referencedColumnNames="id"
+                                 referencedColumnNames="apartment_id"
                                  referencedTableName="apartment"/>
 
     </changeSet>

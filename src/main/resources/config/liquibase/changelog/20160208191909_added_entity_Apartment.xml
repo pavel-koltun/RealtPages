@@ -42,6 +42,8 @@
 
         <dropDefaultValue tableName="apartment" columnName="updated" columnDataType="datetime"/>
 
-
+        <createIndex tableName="apartment" indexName="apartment_id_idx" unique="true">
+            <column name="apartment_id" type="bigint"></column>
+        </createIndex>
     </changeSet>
 </databaseChangeLog>

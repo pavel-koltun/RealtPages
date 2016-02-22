@@ -41,10 +41,10 @@ public class Apartment implements Serializable {
     private String url;
 
     @ManyToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "location_id")
+    @JoinColumn(name = "location_id", referencedColumnName = "id")
     private Location location;
 
-    @OneToMany(mappedBy = "apartment", cascade = CascadeType.ALL)
+    @OneToMany(fetch = FetchType.EAGER, mappedBy = "apartment", cascade = CascadeType.ALL)
     @JsonIgnore
     private Set<Price> prices = new HashSet<>();
 
@@ -117,15 +117,15 @@ public class Apartment implements Serializable {
             return false;
         }
         Apartment apartment = (Apartment) o;
-        if(apartment.id == null || id == null) {
+        if(apartment.apartmentId == null || apartmentId == null) {
             return false;
         }
-        return Objects.equals(id, apartment.id);
+        return Objects.equals(apartmentId, apartment.apartmentId);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hashCode(id);
+        return Objects.hashCode(apartmentId);
     }
 
     @Override

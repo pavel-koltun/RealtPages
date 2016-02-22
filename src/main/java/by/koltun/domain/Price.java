@@ -36,8 +36,23 @@ public class Price implements Serializable {
     private ZonedDateTime created;
 
     @ManyToOne
-    @JoinColumn(name = "apartment_id")
+    @JoinColumn(name = "apartment_id", referencedColumnName = "apartment_id")
     private Apartment apartment;
+
+    public Price() {}
+
+    public Price(BigDecimal usd, BigDecimal ruble, ZonedDateTime created, Apartment apartment) {
+
+        this.priceUsd = usd;
+        this.priceRuble = ruble;
+        this.created = created;
+        this.apartment = apartment;
+    }
+
+    public Price(by.koltun.domain.to.Price price, ZonedDateTime created, Apartment apartment) {
+
+        this(price.getUsd(), price.getByr(), created, apartment);
+    }
 
     public Long getId() {
         return id;
@@ -81,22 +96,15 @@ public class Price implements Serializable {
 
     @Override
     public boolean equals(Object o) {
-        if (this == o) {
-            return true;
-        }
-        if (o == null || getClass() != o.getClass()) {
-            return false;
-        }
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
         Price price = (Price) o;
-        if(price.id == null || id == null) {
-            return false;
-        }
-        return Objects.equals(id, price.id);
+        return Objects.equals(priceUsd, price.priceUsd);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hashCode(id);
+        return Objects.hash(priceUsd);
     }
 
     @Override

@@ -36,6 +36,8 @@
             <!-- jhipster-needle-liquibase-add-column - Jhipster will add columns here, do not remove-->
         </createTable>
 
+        <sql>ALTER TABLE location CONVERT TO CHARACTER SET utf8;</sql>
+
         <addForeignKeyConstraint baseColumnNames="location_id"
                                  baseTableName="apartment"
                                  constraintName="fk_apartment_location_id"

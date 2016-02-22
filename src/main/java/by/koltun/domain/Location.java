@@ -25,20 +25,36 @@ public class Location implements Serializable {
     @NotNull
     @Column(name = "address", nullable = false)
     private String address;
-    
+
     @NotNull
     @Min(value = 0)
     @Column(name = "latitude", nullable = false)
     private Double latitude;
-    
+
     @NotNull
     @Min(value = 0)
     @Column(name = "longitude", nullable = false)
     private Double longitude;
-    
-    @OneToMany(mappedBy = "location")
+
+    @OneToMany(fetch = FetchType.EAGER, mappedBy = "location", cascade = CascadeType.ALL)
     @JsonIgnore
     private Set<Apartment> apartments = new HashSet<>();
+
+    public Location() {}
+
+    public Location(String address, Double latitude, Double longitude) {
+
+        this.address = address;
+        this.latitude = latitude;
+        this.longitude = longitude;
+    }
+
+    public Location(by.koltun.domain.to.Location location) {
+
+        this.address = location.getAddress();
+        this.latitude = location.getLatitude();
+        this.longitude = location.getLongitude();
+    }
 
     public Long getId() {
         return id;
@@ -51,7 +67,7 @@ public class Location implements Serializable {
     public String getAddress() {
         return address;
     }
-    
+
     public void setAddress(String address) {
         this.address = address;
     }
@@ -59,7 +75,7 @@ public class Location implements Serializable {
     public Double getLatitude() {
         return latitude;
     }
-    
+
     public void setLatitude(Double latitude) {
         this.latitude = latitude;
     }
@@ -67,7 +83,7 @@ public class Location implements Serializable {
     public Double getLongitude() {
         return longitude;
     }
-    
+
     public void setLongitude(Double longitude) {
         this.longitude = longitude;
     }
@@ -82,22 +98,15 @@ public class Location implements Serializable {
 
     @Override
     public boolean equals(Object o) {
-        if (this == o) {
-            return true;
-        }
-        if (o == null || getClass() != o.getClass()) {
-            return false;
-        }
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
         Location location = (Location) o;
-        if(location.id == null || id == null) {
-            return false;
-        }
-        return Objects.equals(id, location.id);
+        return Objects.equals(address, location.address);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hashCode(id);
+        return Objects.hash(address);
     }
 
     @Override
