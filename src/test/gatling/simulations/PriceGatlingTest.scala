@@ -80,17 +80,17 @@ class PriceGatlingTest extends Simulation {
             .exec(http("Create new price")
             .post("/api/prices")
             .headers(headers_http_authenticated)
-            .body(StringBody("""{"id":null, "priceUsd":null, "priceRuble":null, "created":"2020-01-01T00:00:00.000Z"}""")).asJSON
+            .body(StringBody("""{"id":null, "priceUsd":null, "priceRuble":null, "updated":"2020-01-01T00:00:00.000Z"}""")).asJSON
             .check(status.is(201))
             .check(headerRegex("Location", "(.*)").saveAs("new_price_url")))
             .pause(10)
             .repeat(5) {
-                exec(http("Get created price")
+                exec(http("Get updated price")
                 .get("${new_price_url}")
                 .headers(headers_http_authenticated))
                 .pause(10)
             }
-            .exec(http("Delete created price")
+            .exec(http("Delete updated price")
             .delete("${new_price_url}")
             .headers(headers_http_authenticated))
             .pause(10)

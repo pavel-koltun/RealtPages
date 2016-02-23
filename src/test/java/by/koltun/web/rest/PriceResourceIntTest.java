@@ -92,7 +92,7 @@ public class PriceResourceIntTest {
         price = new Price();
         price.setPriceUsd(DEFAULT_PRICE_USD);
         price.setPriceRuble(DEFAULT_PRICE_RUBLE);
-        price.setCreated(DEFAULT_CREATED);
+        price.setUpdated(DEFAULT_CREATED);
     }
 
     @Test
@@ -113,7 +113,7 @@ public class PriceResourceIntTest {
         Price testPrice = prices.get(prices.size() - 1);
         assertThat(testPrice.getPriceUsd()).isEqualTo(DEFAULT_PRICE_USD);
         assertThat(testPrice.getPriceRuble()).isEqualTo(DEFAULT_PRICE_RUBLE);
-        assertThat(testPrice.getCreated()).isEqualTo(DEFAULT_CREATED);
+        assertThat(testPrice.getUpdated()).isEqualTo(DEFAULT_CREATED);
     }
 
     @Test
@@ -157,7 +157,7 @@ public class PriceResourceIntTest {
     public void checkCreatedIsRequired() throws Exception {
         int databaseSizeBeforeTest = priceRepository.findAll().size();
         // set the field null
-        price.setCreated(null);
+        price.setUpdated(null);
 
         // Create the Price, which fails.
 
@@ -221,7 +221,7 @@ public class PriceResourceIntTest {
         // Update the price
         price.setPriceUsd(UPDATED_PRICE_USD);
         price.setPriceRuble(UPDATED_PRICE_RUBLE);
-        price.setCreated(UPDATED_CREATED);
+        price.setUpdated(UPDATED_CREATED);
 
         restPriceMockMvc.perform(put("/api/prices")
                 .contentType(TestUtil.APPLICATION_JSON_UTF8)
@@ -234,7 +234,7 @@ public class PriceResourceIntTest {
         Price testPrice = prices.get(prices.size() - 1);
         assertThat(testPrice.getPriceUsd()).isEqualTo(UPDATED_PRICE_USD);
         assertThat(testPrice.getPriceRuble()).isEqualTo(UPDATED_PRICE_RUBLE);
-        assertThat(testPrice.getCreated()).isEqualTo(UPDATED_CREATED);
+        assertThat(testPrice.getUpdated()).isEqualTo(UPDATED_CREATED);
     }
 
     @Test

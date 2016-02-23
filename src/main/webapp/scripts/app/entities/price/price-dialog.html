@@ -46,19 +46,19 @@
             </div>
         </div>
         <div class="form-group">
-            <label class="control-label" translate="onlinerrealtpagesApp.price.created" for="field_created">Created</label>
-            <input id="field_created" type="text" class="form-control" uib-datepicker-popup="{{dateformat}}" ng-model="price.created" is-open="datePickerForCreated.status.opened"
+            <label class="control-label" translate="onlinerrealtpagesApp.price.updated" for="field_created">Created</label>
+            <input id="field_created" type="text" class="form-control" uib-datepicker-popup="{{dateformat}}" ng-model="price.updated" is-open="datePickerForCreated.status.opened"
             required/>
             <span class="input-group-btn">
                 <button type="button" class="btn btn-default" ng-click="datePickerForCreatedOpen($event)"><i class="glyphicon glyphicon-calendar"></i></button>
             </span>
-            <div ng-show="editForm.created.$invalid">
+            <div ng-show="editForm.updated.$invalid">
                 <p class="help-block"
-                    ng-show="editForm.created.$error.required" translate="entity.validation.required">
+                    ng-show="editForm.updated.$error.required" translate="entity.validation.required">
                     This field is required.
                 </p>
                 <p class="help-block"
-                    ng-show="editForm.created.$error.ZonedDateTimelocal" translate="entity.validation.ZonedDateTimelocal">
+                    ng-show="editForm.updated.$error.ZonedDateTimelocal" translate="entity.validation.ZonedDateTimelocal">
                     This field should be a date and time.
                 </p>
             </div>

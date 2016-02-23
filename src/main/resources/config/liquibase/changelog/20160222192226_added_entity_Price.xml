@@ -24,21 +24,21 @@
             <column name="price_usd" type="decimal(10,2)">
                 <constraints nullable="false" />
             </column>
-            
+
             <column name="price_ruble" type="decimal(10,2)">
                 <constraints nullable="false" />
             </column>
-            
-            <column name="created" type="timestamp">
+
+            <column name="updated" type="timestamp">
                 <constraints nullable="false" />
             </column>
-            
+
             <column name="apartment_id" type="bigint"/>
             <!-- jhipster-needle-liquibase-add-column - Jhipster will add columns here, do not remove-->
         </createTable>
-        <dropDefaultValue tableName="price" columnName="created" columnDataType="datetime"/>
+        <dropDefaultValue tableName="price" columnName="updated" columnDataType="datetime"/>
 
-        
+
         <addForeignKeyConstraint baseColumnNames="apartment_id"
                                  baseTableName="price"
                                  constraintName="fk_price_apartment_id"

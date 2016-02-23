@@ -7,8 +7,6 @@ import javax.persistence.*;
 import javax.validation.constraints.*;
 import java.io.Serializable;
 import java.math.BigDecimal;
-import java.util.HashSet;
-import java.util.Set;
 import java.util.Objects;
 
 /**
@@ -32,8 +30,8 @@ public class Price implements Serializable {
     private BigDecimal priceRuble;
 
     @NotNull
-    @Column(name = "created", nullable = false)
-    private ZonedDateTime created;
+    @Column(name = "updated", nullable = false)
+    private ZonedDateTime updated;
 
     @ManyToOne
     @JoinColumn(name = "apartment_id")
@@ -63,12 +61,12 @@ public class Price implements Serializable {
         this.priceRuble = priceRuble;
     }
 
-    public ZonedDateTime getCreated() {
-        return created;
+    public ZonedDateTime getUpdated() {
+        return updated;
     }
 
-    public void setCreated(ZonedDateTime created) {
-        this.created = created;
+    public void setUpdated(ZonedDateTime updated) {
+        this.updated = updated;
     }
 
     public Apartment getApartment() {
@@ -99,7 +97,7 @@ public class Price implements Serializable {
             "id=" + id +
             ", priceUsd='" + priceUsd + "'" +
             ", priceRuble='" + priceRuble + "'" +
-            ", created='" + created + "'" +
+            ", updated='" + updated + "'" +
             '}';
     }
 }

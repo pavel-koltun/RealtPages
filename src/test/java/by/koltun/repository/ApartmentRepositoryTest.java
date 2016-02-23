@@ -75,7 +75,7 @@ public class ApartmentRepositoryTest {
         apartment.setLocation(location);
 
         Price price = new Price();
-        price.setCreated(ZonedDateTime.now());
+        price.setUpdated(ZonedDateTime.now());
         price.setPriceRuble(DEFAULT_PRICE_RUBLE);
         price.setPriceUsd(DEFAULT_PRICE_USD);
         price.setApartment(apartment);
