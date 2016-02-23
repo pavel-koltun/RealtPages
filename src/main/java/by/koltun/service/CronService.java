@@ -23,7 +23,7 @@ public class CronService {
     @Autowired private ApartmentsCommonService apartmentsCommonService;
 
 
-    @Scheduled(cron = "0 */2 * * * *")
+    @Scheduled(cron = "0 */5 * * * *")
     public void receiveLastRentApartments() {
 
         try {
