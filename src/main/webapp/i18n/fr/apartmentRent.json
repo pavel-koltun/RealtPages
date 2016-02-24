@@ -1,0 +1,24 @@
+{
+    "onlinerrealtpagesApp": {
+        "apartmentRent" : {
+            "home": {
+                "title": "ApartmentRents",
+                "createLabel": "Créer un nouveau ApartmentRent",
+                "createOrEditLabel": "Créer ou éditer un ApartmentRent",
+                "search": "Search for ApartmentRent"
+            },
+            "created": "Un nouveau ApartmentRent a été créé avec l'identifiant {{ param }}",
+            "updated": "Le ApartmentRent avec l'identifiant {{ param }} a été mis à jour",
+            "deleted": "Le ApartmentRent avec l'identifiant {{ param }} a été supprimé",
+            "delete": {
+                "question": "Etes-vous certain de vouloir supprimer le ApartmentRent {{ id }} ?"
+            },
+            "detail": {
+                "title": "ApartmentRent"
+            },
+            "type": "Type",
+            "owner": "Owner"
+        }
+    }
+}
+

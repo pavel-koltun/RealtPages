@@ -16,6 +16,7 @@ import java.util.Objects;
  */
 @Entity
 @Table(name = "apartment")
+@Inheritance(strategy=InheritanceType.JOINED)
 @Document(indexName = "apartment")
 public class Apartment implements Serializable {
 

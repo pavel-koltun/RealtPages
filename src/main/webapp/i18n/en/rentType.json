@@ -1,0 +1,15 @@
+{
+    "onlinerrealtpagesApp": {
+        "RentType" : {
+            "null": "",
+            "ROOM": "ROOM",
+            "ONE_ROOM": "ONE_ROOM",
+            "TWO_ROOMS": "TWO_ROOMS",
+            "THREE_ROOMS": "THREE_ROOMS",
+            "FOUR_ROOMS": "FOUR_ROOMS",
+            "FIVE_ROOMS": "FIVE_ROOMS",
+            "SIX_ROOMS": "SIX_ROOMS",
+            "OTHER": "OTHER"
+        }
+    }
+}

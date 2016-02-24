@@ -10,6 +10,7 @@
                 "location": "Location",
                 "apartment": "Apartment",
                 "price": "Price",
+                "apartmentRent": "ApartmentRent",
                 "jhipster-needle-menu-add-entry": "JHipster will add additional entities here (do not translate!)"
             },
             "account": {
