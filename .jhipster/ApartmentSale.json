@@ -1,0 +1,86 @@
+{
+  "relationships": [],
+  "fields": [
+    {
+      "fieldId": 1,
+      "fieldName": "resale",
+      "fieldType": "Boolean",
+      "fieldValidateRules": [
+        "required"
+      ]
+    },
+    {
+      "fieldId": 2,
+      "fieldName": "rooms",
+      "fieldType": "Integer",
+      "fieldValidateRules": [
+        "required",
+        "min"
+      ],
+      "fieldValidateRulesMin": 0
+    },
+    {
+      "fieldId": 3,
+      "fieldName": "floor",
+      "fieldType": "Integer",
+      "fieldValidateRules": [
+        "required",
+        "min"
+      ],
+      "fieldValidateRulesMin": 0
+    },
+    {
+      "fieldId": 4,
+      "fieldName": "floors",
+      "fieldType": "Integer",
+      "fieldValidateRules": [
+        "required",
+        "min"
+      ],
+      "fieldValidateRulesMin": 0
+    },
+    {
+      "fieldId": 5,
+      "fieldName": "areaTotal",
+      "fieldType": "Double",
+      "fieldValidateRules": [
+        "required",
+        "min"
+      ],
+      "fieldValidateRulesMin": 0
+    },
+    {
+      "fieldId": 6,
+      "fieldName": "areaLiving",
+      "fieldType": "Double",
+      "fieldValidateRules": [
+        "required",
+        "min"
+      ],
+      "fieldValidateRulesMin": 0
+    },
+    {
+      "fieldId": 7,
+      "fieldName": "areaKitchen",
+      "fieldType": "Double",
+      "fieldValidateRules": [
+        "required",
+        "min"
+      ],
+      "fieldValidateRulesMin": 0
+    },
+    {
+      "fieldId": 8,
+      "fieldName": "seller",
+      "fieldType": "SellerType",
+      "fieldValues": "OWNER,AGENT,BUILDER",
+      "fieldValidateRules": [
+        "required"
+      ]
+    }
+  ],
+  "changelogDate": "20160224213246",
+  "dto": "no",
+  "pagination": "pager",
+  "service": "serviceClass"
+}

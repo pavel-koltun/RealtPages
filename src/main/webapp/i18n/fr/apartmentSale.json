@@ -1,0 +1,30 @@
+{
+    "onlinerrealtpagesApp": {
+        "apartmentSale" : {
+            "home": {
+                "title": "ApartmentSales",
+                "createLabel": "Créer un nouveau ApartmentSale",
+                "createOrEditLabel": "Créer ou éditer un ApartmentSale",
+                "search": "Search for ApartmentSale"
+            },
+            "created": "Un nouveau ApartmentSale a été créé avec l'identifiant {{ param }}",
+            "updated": "Le ApartmentSale avec l'identifiant {{ param }} a été mis à jour",
+            "deleted": "Le ApartmentSale avec l'identifiant {{ param }} a été supprimé",
+            "delete": {
+                "question": "Etes-vous certain de vouloir supprimer le ApartmentSale {{ id }} ?"
+            },
+            "detail": {
+                "title": "ApartmentSale"
+            },
+            "resale": "Resale",
+            "rooms": "Rooms",
+            "floor": "Floor",
+            "floors": "Floors",
+            "areaTotal": "AreaTotal",
+            "areaLiving": "AreaLiving",
+            "areaKitchen": "AreaKitchen",
+            "seller": "Seller"
+        }
+    }
+}
+

@@ -10,5 +10,6 @@
     <include file="classpath:config/liquibase/changelog/20160222192226_added_entity_Price.xml" relativeToChangelogFile="false"/>
     <include file="classpath:config/liquibase/changelog/20160223225355_set_Location_table_charset_toUTF8.xml" relativeToChangelogFile="false"/>
     <include file="classpath:config/liquibase/changelog/20160224205534_added_entity_ApartmentRent.xml" relativeToChangelogFile="false"/>
+    <include file="classpath:config/liquibase/changelog/20160224213246_added_entity_ApartmentSale.xml" relativeToChangelogFile="false"/>
     <!-- jhipster-needle-liquibase-add-changelog - JHipster will add liquibase changelogs here -->
 </databaseChangeLog>

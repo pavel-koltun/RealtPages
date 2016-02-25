@@ -1,0 +1,29 @@
+{
+    "onlinerrealtpagesApp": {
+        "apartmentSale" : {
+            "home": {
+                "title": "ApartmentSales",
+                "createLabel": "Create a new ApartmentSale",
+                "createOrEditLabel": "Create or edit a ApartmentSale",
+                "search": "Search for ApartmentSale"
+            },
+            "created": "A new ApartmentSale is created with identifier {{ param }}",
+            "updated": "A ApartmentSale is updated with identifier {{ param }}",
+            "deleted": "A ApartmentSale is deleted with identifier {{ param }}",
+            "delete": {
+                "question": "Are you sure you want to delete ApartmentSale {{ id }}?"
+            },
+            "detail": {
+                "title": "ApartmentSale"
+            },
+            "resale": "Resale",
+            "rooms": "Rooms",
+            "floor": "Floor",
+            "floors": "Floors",
+            "areaTotal": "AreaTotal",
+            "areaLiving": "AreaLiving",
+            "areaKitchen": "AreaKitchen",
+            "seller": "Seller"
+        }
+    }
+}

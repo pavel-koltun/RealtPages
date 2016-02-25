@@ -1,0 +1,10 @@
+{
+    "onlinerrealtpagesApp": {
+        "SellerType" : {
+            "null": "",
+            "OWNER": "OWNER",
+            "AGENT": "AGENT",
+            "BUILDER": "BUILDER"
+        }
+    }
+}

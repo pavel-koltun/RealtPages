@@ -11,6 +11,7 @@
                 "apartment": "Apartment",
                 "price": "Price",
                 "apartmentRent": "ApartmentRent",
+                "apartmentSale": "ApartmentSale",
                 "jhipster-needle-menu-add-entry": "JHipster will add additional entities here (do not translate!)"
             },
             "account": {
