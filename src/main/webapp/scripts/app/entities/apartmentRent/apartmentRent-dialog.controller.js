@@ -1,10 +1,13 @@
 'use strict';
 
 angular.module('onlinerrealtpagesApp').controller('ApartmentRentDialogController',
-    ['$scope', '$stateParams', '$uibModalInstance', 'entity', 'ApartmentRent',
-        function($scope, $stateParams, $uibModalInstance, entity, ApartmentRent) {
+    ['$scope', '$stateParams', '$uibModalInstance', 'entity', 'Apartment', 'ApartmentRent', 'Location', 'Price',
+        function($scope, $stateParams, $uibModalInstance, entity, Apartment, ApartmentRent, Location, Price) {
 
         $scope.apartmentRent = entity;
+        $scope.locations = Location.query();
+        $scope.prices = Price.query();
+
         $scope.load = function(id) {
             ApartmentRent.get({id : id}, function(result) {
                 $scope.apartmentRent = result;
@@ -32,5 +35,24 @@ angular.module('onlinerrealtpagesApp').controller('ApartmentRentDialogController
 
         $scope.clear = function() {
             $uibModalInstance.dismiss('cancel');
+        };
+
+        $scope.datePickerForCreated = {};
+
+        $scope.datePickerForCreated.status = {
+             opened: false
+        };
+
+        $scope.datePickerForCreatedOpen = function($event) {
+            $scope.datePickerForCreated.status.opened = true;
+        };
+        $scope.datePickerForUpdated = {};
+
+        $scope.datePickerForUpdated.status = {
+            opened: false
+        };
+
+        $scope.datePickerForUpdatedOpen = function($event) {
+            $scope.datePickerForUpdated.status.opened = true;
         };
 }]);

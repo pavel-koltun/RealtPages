@@ -40,6 +40,10 @@ angular.module('onlinerrealtpagesApp')
             $scope.apartmentRent = {
                 type: null,
                 owner: false,
+                apartmentId: null,
+                created: null,
+                updated: null,
+                url: null,
                 id: null
             };
         };

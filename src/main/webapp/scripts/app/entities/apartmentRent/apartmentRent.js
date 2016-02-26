@@ -18,6 +18,7 @@ angular.module('onlinerrealtpagesApp')
                 },
                 resolve: {
                     translatePartialLoader: ['$translate', '$translatePartialLoader', function ($translate, $translatePartialLoader) {
+                        $translatePartialLoader.addPart('apartment');
                         $translatePartialLoader.addPart('apartmentRent');
                         $translatePartialLoader.addPart('rentType');
                         $translatePartialLoader.addPart('global');
@@ -40,6 +41,7 @@ angular.module('onlinerrealtpagesApp')
                 },
                 resolve: {
                     translatePartialLoader: ['$translate', '$translatePartialLoader', function ($translate, $translatePartialLoader) {
+                        $translatePartialLoader.addPart('apartment');
                         $translatePartialLoader.addPart('apartmentRent');
                         $translatePartialLoader.addPart('rentType');
                         return $translate.refresh();
@@ -65,6 +67,10 @@ angular.module('onlinerrealtpagesApp')
                                 return {
                                     type: null,
                                     owner: false,
+                                    apartmentId: null,
+                                    created: null,
+                                    updated: null,
+                                    url: null,
                                     id: null
                                 };
                             }

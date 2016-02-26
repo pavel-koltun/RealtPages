@@ -2,6 +2,8 @@ package by.koltun.domain;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import java.time.ZonedDateTime;
+
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import org.springframework.data.elasticsearch.annotations.Document;
 
 import javax.persistence.*;
@@ -43,8 +45,8 @@ public class Apartment implements Serializable {
     @JoinColumn(name = "location_id")
     private Location location;
 
-    @OneToMany(mappedBy = "apartment", cascade = {CascadeType.MERGE, CascadeType.PERSIST})
-    @JsonIgnore
+    @OneToMany(mappedBy = "apartment", fetch = FetchType.EAGER, cascade = {CascadeType.MERGE, CascadeType.PERSIST})
+    @JsonManagedReference
     private Set<Price> prices = new HashSet<>();
 
     public Long getId() {

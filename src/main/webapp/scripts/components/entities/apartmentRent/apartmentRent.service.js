@@ -8,6 +8,8 @@ angular.module('onlinerrealtpagesApp')
                 method: 'GET',
                 transformResponse: function (data) {
                     data = angular.fromJson(data);
+                    data.created = DateUtils.convertDateTimeFromServer(data.created);
+                    data.updated = DateUtils.convertDateTimeFromServer(data.updated);
                     return data;
                 }
             },

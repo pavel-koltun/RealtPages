@@ -14,22 +14,93 @@
                     ng-model="apartmentRent.id" readonly />
         </div>
         <div class="form-group">
-            <label class="control-label" translate="onlinerrealtpagesApp.apartmentRent.type" for="field_type">Type</label>
-            <select class="form-control" name="type" ng-model="apartmentRent.type" id="field_type" required>
-                <option value="ROOM" translate="onlinerrealtpagesApp.RentType.ROOM">ROOM</option>
-                <option value="ONE_ROOM" translate="onlinerrealtpagesApp.RentType.ONE_ROOM">ONE_ROOM</option>
-                <option value="TWO_ROOMS" translate="onlinerrealtpagesApp.RentType.TWO_ROOMS">TWO_ROOMS</option>
-                <option value="THREE_ROOMS" translate="onlinerrealtpagesApp.RentType.THREE_ROOMS">THREE_ROOMS</option>
-                <option value="FOUR_ROOMS" translate="onlinerrealtpagesApp.RentType.FOUR_ROOMS">FOUR_ROOMS</option>
-                <option value="FIVE_ROOMS" translate="onlinerrealtpagesApp.RentType.FIVE_ROOMS">FIVE_ROOMS</option>
-                <option value="SIX_ROOMS" translate="onlinerrealtpagesApp.RentType.SIX_ROOMS">SIX_ROOMS</option>
-                <option value="OTHER" translate="onlinerrealtpagesApp.RentType.OTHER">OTHER</option>
-            </select>
-            <div ng-show="editForm.type.$invalid">
+            <label class="control-label" translate="onlinerrealtpagesApp.apartment.apartmentId" for="field_apartmentId">ApartmentId</label>
+            <input type="number" class="form-control" name="apartmentId" id="field_apartmentId"
+                   ng-model="apartmentRent.apartmentId"
+                   required />
+            <div ng-show="editForm.apartmentId.$invalid">
                 <p class="help-block"
-                    ng-show="editForm.type.$error.required" translate="entity.validation.required">
+                   ng-show="editForm.apartmentId.$error.required" translate="entity.validation.required">
                     This field is required.
                 </p>
+                <p class="help-block"
+                   ng-show="editForm.apartmentId.$error.number" translate="entity.validation.number">
+                    This field should be a number.
+                </p>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="control-label" translate="onlinerrealtpagesApp.apartment.created" for="field_created">Created</label>
+            <div class="input-group">
+                <span class="input-group-btn">
+                    <button type="button" class="btn btn-default" ng-click="datePickerForCreatedOpen($event)"><i class="glyphicon glyphicon-calendar"></i></button>
+                </span>
+                <input id="field_created" type="text" class="form-control" uib-datepicker-popup="{{dateformat}}" ng-model="apartmentRent.created" is-open="datePickerForCreated.status.opened"
+                       required/>
+            </div>
+            <div ng-show="editForm.created.$invalid">
+                <p class="help-block"
+                   ng-show="editForm.created.$error.required" translate="entity.validation.required">
+                    This field is required.
+                </p>
+                <p class="help-block"
+                   ng-show="editForm.created.$error.ZonedDateTimelocal" translate="entity.validation.ZonedDateTimelocal">
+                    This field should be a date and time.
+                </p>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="control-label" translate="onlinerrealtpagesApp.apartment.updated" for="field_updated">Updated</label>
+            <div class="input-group">
+                <span class="input-group-btn">
+                    <button type="button" class="btn btn-default" ng-click="datePickerForUpdatedOpen($event)"><i class="glyphicon glyphicon-calendar"></i></button>
+                </span>
+                <input id="field_updated" type="text" class="form-control" uib-datepicker-popup="{{dateformat}}" ng-model="apartmentRent.updated" is-open="datePickerForUpdated.status.opened"
+                       required/>
+            </div>
+            <div ng-show="editForm.updated.$invalid">
+                <p class="help-block"
+                   ng-show="editForm.updated.$error.required" translate="entity.validation.required">
+                    This field is required.
+                </p>
+                <p class="help-block"
+                   ng-show="editForm.updated.$error.ZonedDateTimelocal" translate="entity.validation.ZonedDateTimelocal">
+                    This field should be a date and time.
+                </p>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="control-label" translate="onlinerrealtpagesApp.apartment.url" for="field_url">Url</label>
+            <input type="text" class="form-control" name="url" id="field_url"
+                   ng-model="apartmentRent.url" value="{{apartmentRent.apartmentId}}"
+            >
+        </div>
+        <div class="form-group">
+            <div class="col-sm-6" style="padding-left: 0px;">
+                <label class="control-label" translate="onlinerrealtpagesApp.apartmentRent.type" for="field_type">Type</label>
+                <select class="form-control" name="type" ng-model="apartmentRent.type" id="field_type" required>
+                    <option value="ROOM" translate="onlinerrealtpagesApp.RentType.ROOM">ROOM</option>
+                    <option value="ONE_ROOM" translate="onlinerrealtpagesApp.RentType.ONE_ROOM">ONE_ROOM</option>
+                    <option value="TWO_ROOMS" translate="onlinerrealtpagesApp.RentType.TWO_ROOMS">TWO_ROOMS</option>
+                    <option value="THREE_ROOMS" translate="onlinerrealtpagesApp.RentType.THREE_ROOMS">THREE_ROOMS</option>
+                    <option value="FOUR_ROOMS" translate="onlinerrealtpagesApp.RentType.FOUR_ROOMS">FOUR_ROOMS</option>
+                    <option value="FIVE_ROOMS" translate="onlinerrealtpagesApp.RentType.FIVE_ROOMS">FIVE_ROOMS</option>
+                    <option value="SIX_ROOMS" translate="onlinerrealtpagesApp.RentType.SIX_ROOMS">SIX_ROOMS</option>
+                    <option value="OTHER" translate="onlinerrealtpagesApp.RentType.OTHER">OTHER</option>
+                </select>
+                <div ng-show="editForm.type.$invalid">
+                    <p class="help-block"
+                       ng-show="editForm.type.$error.required" translate="entity.validation.required">
+                        This field is required.
+                    </p>
+                </div>
+            </div>
+            <div class="col-sm-6" style="padding-right: 0px;">
+                <label translate="onlinerrealtpagesApp.apartment.location" for="field_location">location</label>
+                <select class="form-control" id="field_location" name="location" ng-model="apartmentRent.location"
+                        ng-options="location as location.address for location in locations track by location.id">
+                    <option value=""></option>
+                </select>
             </div>
         </div>
         <div class="form-group">

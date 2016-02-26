@@ -74,7 +74,8 @@
 
         <div class="form-group">
             <label translate="onlinerrealtpagesApp.apartment.location" for="field_location">location</label>
-            <select class="form-control" id="field_location" name="location" ng-model="apartment.location" ng-options="location as location.id for location in locations track by location.id">
+            <select class="form-control" id="field_location" name="location" ng-model="apartment.location"
+                    ng-options="location as location.address for location in locations track by location.id">
                 <option value=""></option>
             </select>
         </div>

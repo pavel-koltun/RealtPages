@@ -12,6 +12,41 @@
             <tbody>
             <tr>
                 <td>
+                    <span translate="onlinerrealtpagesApp.apartment.apartmentId">ApartmentId</span>
+                </td>
+                <td>
+                    <span class="form-control-static">{{apartmentRent.apartmentId}}</span>
+                    <a href="{{apartmentRent.url}}" target="_blank">
+                        <span class="glyphicon glyphicon-link"></span>
+                    </a>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <span translate="onlinerrealtpagesApp.apartment.created">Created</span>
+                </td>
+                <td>
+                    <span class="form-control-static">{{apartmentRent.created | date:'medium'}}</span>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <span translate="onlinerrealtpagesApp.apartment.updated">Updated</span>
+                </td>
+                <td>
+                    <span class="form-control-static">{{apartmentRent.updated | date:'medium'}}</span>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <span translate="onlinerrealtpagesApp.apartment.location">location</span>
+                </td>
+                <td>
+                    <a class="form-control-static" ui-sref="location.detail({id:apartment.location.id})">{{apartmentRent.location.address}}</a>
+                </td>
+            </tr>
+            <tr>
+                <td>
                     <span translate="onlinerrealtpagesApp.apartmentRent.type">Type</span>
                 </td>
                 <td>
@@ -23,7 +58,10 @@
                     <span translate="onlinerrealtpagesApp.apartmentRent.owner">Owner</span>
                 </td>
                 <td>
-                    <span class="form-control-static">{{apartmentRent.owner}}</span>
+                    <span class="label label-danger" ng-show="!apartmentRent.owner"
+                          translate="onlinerrealtpagesApp.apartmentRent.agent">Agent</span>
+                    <span class="label label-success" ng-show="apartmentRent.owner"
+                          translate="onlinerrealtpagesApp.apartmentRent.owner">Owner</span>
                 </td>
             </tr>
             </tbody>

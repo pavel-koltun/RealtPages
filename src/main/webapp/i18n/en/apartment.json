@@ -19,6 +19,7 @@
             "apartmentId": "ApartmentId",
             "created": "Created",
             "updated": "Updated",
+            "dates": "Updated / Created",
             "url": "Url",
             "location": "Location",
             "prices": "Prices"

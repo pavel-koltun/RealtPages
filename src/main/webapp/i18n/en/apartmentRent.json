@@ -17,7 +17,8 @@
                 "title": "ApartmentRent"
             },
             "type": "Type",
-            "owner": "Owner"
+            "owner": "Owner",
+            "agent": "Agent"
         }
     }
 }

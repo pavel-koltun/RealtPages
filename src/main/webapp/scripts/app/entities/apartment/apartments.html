@@ -6,7 +6,7 @@
             <div class="col-xs-4 no-padding-left">
                 <button class="btn btn-primary" ui-sref="apartment.new" >
                     <span class="glyphicon glyphicon-plus"></span>
-                    <span 
+                    <span
 class="hidden-xs"                        translate="onlinerrealtpagesApp.apartment.home.createLabel">Create new Apartment
                     </span>
                 </button>
@@ -34,7 +34,6 @@ class="hidden-xs"                        translate="onlinerrealtpagesApp.apartme
                     <th jh-sort-by="apartmentId"><span translate="onlinerrealtpagesApp.apartment.apartmentId">ApartmentId</span> <span class="glyphicon glyphicon-sort"></span></th>
                     <th jh-sort-by="created"><span translate="onlinerrealtpagesApp.apartment.created">Created</span> <span class="glyphicon glyphicon-sort"></span></th>
                     <th jh-sort-by="updated"><span translate="onlinerrealtpagesApp.apartment.updated">Updated</span> <span class="glyphicon glyphicon-sort"></span></th>
-                    <th jh-sort-by="url"><span translate="onlinerrealtpagesApp.apartment.url">Url</span> <span class="glyphicon glyphicon-sort"></span></th>
                     <th jh-sort-by="location.id"><span translate="onlinerrealtpagesApp.apartment.location">location</span> <span class="glyphicon glyphicon-sort"></span></th>
                     <th></th>
                 </tr>
@@ -42,32 +41,33 @@ class="hidden-xs"                        translate="onlinerrealtpagesApp.apartme
             <tbody>
                 <tr ng-repeat="apartment in apartments track by apartment.id">
                     <td><a ui-sref="apartment.detail({id:apartment.id})">{{apartment.id}}</a></td>
-                    <td>{{apartment.apartmentId}}</td>
-                    <td>{{apartment.created | date:'medium'}}</td>
-                    <td>{{apartment.updated | date:'medium'}}</td>
-                    <td>{{apartment.url}}</td>
                     <td>
-                        <a ui-sref="location.detail({id:apartment.location.id})">{{apartment.location.id}}</a>
+                        {{apartment.apartmentId}}
+                        <a href="{{apartment.url}}" target="_blank">
+                            <span class="glyphicon glyphicon-link"></span>
+                        </a>
+                    </td>
+                    <td>{{apartment.created | date:'short'}}</td>
+                    <td>{{apartment.updated | date:'short'}}</td>
+                    <td>
+                        <a ui-sref="location.detail({id:apartment.location.id})">{{apartment.location.address}}</a>
                     </td>
                     <td class="text-right">
                         <div class="btn-group flex-btn-group-container">
                             <button type="submit"
                                     ui-sref="apartment.detail({id:apartment.id})"
-                                    class="btn btn-info btn-sm"> 
+                                    class="btn btn-info btn-sm">
                                 <span class="glyphicon glyphicon-eye-open"></span>
-                                <span class="hidden-xs hidden-sm" translate="entity.action.view"></span>
                             </button>
                             <button type="submit"
                                     ui-sref="apartment.edit({id:apartment.id})"
                                     class="btn btn-primary btn-sm">
                                 <span class="glyphicon glyphicon-pencil"></span>
-                                <span class="hidden-xs hidden-sm" translate="entity.action.edit"></span>
                             </button>
                             <button type="submit"
                                     ui-sref="apartment.delete({id:apartment.id})"
-                                    class="btn btn-danger btn-sm">                                    
+                                    class="btn btn-danger btn-sm">
                                 <span class="glyphicon glyphicon-remove-circle"></span>
-                                <span class="hidden-xs hidden-sm" translate="entity.action.delete"></span>
                             </button>
                         </div>
                     </td>

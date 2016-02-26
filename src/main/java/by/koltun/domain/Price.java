@@ -1,6 +1,8 @@
 package by.koltun.domain;
 
 import java.time.ZonedDateTime;
+
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import org.springframework.data.elasticsearch.annotations.Document;
 
 import javax.persistence.*;
@@ -35,6 +37,7 @@ public class Price implements Serializable {
 
     @ManyToOne
     @JoinColumn(name = "apartment_id")
+    @JsonBackReference
     private Apartment apartment;
 
     public Long getId() {

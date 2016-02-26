@@ -16,6 +16,9 @@
                 </td>
                 <td>
                     <span class="form-control-static">{{apartment.apartmentId}}</span>
+                    <a href="{{apartment.url}}" target="_blank">
+                        <span class="glyphicon glyphicon-link"></span>
+                    </a>
                 </td>
             </tr>
             <tr>
@@ -36,18 +39,10 @@
             </tr>
             <tr>
                 <td>
-                    <span translate="onlinerrealtpagesApp.apartment.url">Url</span>
-                </td>
-                <td>
-                    <span class="form-control-static">{{apartment.url}}</span>
-                </td>
-            </tr>
-            <tr>
-                <td>
                     <span translate="onlinerrealtpagesApp.apartment.location">location</span>
                 </td>
                 <td>
-                    <a class="form-control-static" ui-sref="location.detail({id:apartment.location.id})">{{apartment.location.id}}</a>
+                    <a class="form-control-static" ui-sref="location.detail({id:apartment.location.id})">{{apartment.location.address}}</a>
                 </td>
             </tr>
             </tbody>
