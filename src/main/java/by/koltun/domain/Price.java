@@ -24,11 +24,11 @@ public class Price implements Serializable {
     private Long id;
 
     @NotNull
-    @Column(name = "price_usd", precision=10, scale=2, nullable = false)
+    @Column(name = "price_usd", nullable = false)
     private BigDecimal priceUsd;
 
     @NotNull
-    @Column(name = "price_ruble", precision=10, scale=2, nullable = false)
+    @Column(name = "price_ruble", nullable = false)
     private BigDecimal priceRuble;
 
     @NotNull
@@ -85,13 +85,13 @@ public class Price implements Serializable {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Price price = (Price) o;
-        return Objects.equals(priceUsd, price.priceUsd) &&
+        return Objects.equals(updated, price.updated) &&
             Objects.equals(apartment, price.apartment);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(priceUsd, apartment);
+        return Objects.hash(updated, apartment);
     }
 
     @Override

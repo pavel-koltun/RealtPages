@@ -12,12 +12,12 @@ public class ApartmentSale extends Apartment {
     private Boolean isResale;
 
     @JsonProperty(value = "number_of_rooms")
-    private Long rooms;
+    private Integer rooms;
 
-    private Long floor;
+    private Integer floor;
 
     @JsonProperty(value = "number_of_floors")
-    private Long floors;
+    private Integer floors;
 
     private Area area;
 
@@ -31,27 +31,27 @@ public class ApartmentSale extends Apartment {
         isResale = resale;
     }
 
-    public Long getRooms() {
+    public Integer getRooms() {
         return rooms;
     }
 
-    public void setRooms(Long rooms) {
+    public void setRooms(Integer rooms) {
         this.rooms = rooms;
     }
 
-    public Long getFloor() {
+    public Integer getFloor() {
         return floor;
     }
 
-    public void setFloor(Long floor) {
+    public void setFloor(Integer floor) {
         this.floor = floor;
     }
 
-    public Long getFloors() {
+    public Integer getFloors() {
         return floors;
     }
 
-    public void setFloors(Long floors) {
+    public void setFloors(Integer floors) {
         this.floors = floors;
     }
 

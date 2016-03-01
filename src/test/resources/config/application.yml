@@ -13,7 +13,7 @@
 spring:
     datasource:
         driver-class-name: org.h2.jdbcx.JdbcDataSource
-        url: jdbc:h2:mem:OnlinerRealtPages;DB_CLOSE_DELAY=-1
+        url: jdbc:h2:mem:OnlinerRealtPagesTest;DB_CLOSE_DELAY=-1
         name:
         username:
         password:
@@ -29,7 +29,7 @@ spring:
             hibernate.cache.use_second_level_cache: false
             hibernate.cache.use_query_cache: false
             hibernate.generate_statistics: true
-            hibernate.hbm2ddl.auto: validate
+            hibernate.hbm2ddl.auto: create-drop
     data:
         elasticsearch:
             cluster-name:

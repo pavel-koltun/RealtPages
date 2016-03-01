@@ -537,10 +537,10 @@
                     <changeLogFile>src/main/resources/config/liquibase/master.xml</changeLogFile>
                     <diffChangeLogFile>src/main/resources/config/liquibase/changelog/${maven.build.timestamp}_changelog.xml</diffChangeLogFile>
                     <driver>com.mysql.jdbc.Driver</driver>
-                    <url>jdbc:mysql://localhost:3306/OnlinerRealtPages</url>
-                    <defaultSchemaName>OnlinerRealtPages</defaultSchemaName>
-                    <username>root</username>
-                    <password></password>
+                    <url>jdbc:mysql://localhost:3306/OnlinerRealtPagesTest</url>
+                    <defaultSchemaName>OnlinerRealtPagesTest</defaultSchemaName>
+                    <username>jhipster</username>
+                    <password>jhipster</password>
                     <referenceUrl>hibernate:spring:by.koltun.domain?dialect=org.hibernate.dialect.MySQLInnoDBDialect</referenceUrl>
                     <verbose>true</verbose>
                     <logging>debug</logging>
