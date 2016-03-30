@@ -41,7 +41,7 @@ public class Apartment implements Serializable {
     @Column(name = "url")
     private String url;
 
-    @ManyToOne(cascade = CascadeType.PERSIST)
+    @ManyToOne(cascade = CascadeType.MERGE)
     @JoinColumn(name = "location_id")
     private Location location;
 

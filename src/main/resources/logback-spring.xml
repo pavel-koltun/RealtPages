@@ -22,7 +22,7 @@
     </appender>
 -->
 
-    <logger name="by.koltun" level="@logback.loglevel@"/>
+    <logger name="by.koltun" level="INFO"/>
 
     <logger name="javax.activation" level="WARN"/>
     <logger name="javax.mail" level="WARN"/>

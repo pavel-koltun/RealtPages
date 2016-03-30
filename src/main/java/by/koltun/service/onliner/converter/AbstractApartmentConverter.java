@@ -20,8 +20,6 @@ public abstract class AbstractApartmentConverter<T extends by.koltun.web.rest.to
 
     private static final Logger LOGGER = LoggerFactory.getLogger(AbstractApartmentConverter.class);
 
-    @Autowired LocationRepository locationRepository;
-
     @Autowired @Qualifier("locationConverter") DomainModelConverter<by.koltun.web.rest.to.Location, Location> locationConverter;
     @Autowired @Qualifier("priceConverter") DomainModelConverter<by.koltun.web.rest.to.Price, Price> priceConverter;
     @Autowired ZonedDateTimeConverter zonedDateTimeConverter;
@@ -67,14 +65,7 @@ public abstract class AbstractApartmentConverter<T extends by.koltun.web.rest.to
 
         result.getPrices().add(price);
 
-        Optional<Location> existedLocation = locationRepository.findByAddress(apartment.getLocation().getAddress());
-
-        if (!existedLocation.isPresent()) {
-
-            existedLocation = Optional.of(location);
-        }
-
-        result.setLocation(existedLocation.get());
+        result.setLocation(location);
 
         return result;
     }
