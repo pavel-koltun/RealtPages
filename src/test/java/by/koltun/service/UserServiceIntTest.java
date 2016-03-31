@@ -1,6 +1,6 @@
 package by.koltun.service;
 
-import by.koltun.Application;
+import by.koltun.OnlinerRealtPagesApp;
 import by.koltun.domain.User;
 import by.koltun.repository.UserRepository;
 import java.time.ZonedDateTime;
@@ -26,7 +26,7 @@ import static org.assertj.core.api.Assertions.*;
  * @see UserService
  */
 @RunWith(SpringJUnit4ClassRunner.class)
-@SpringApplicationConfiguration(classes = Application.class)
+@SpringApplicationConfiguration(classes = OnlinerRealtPagesApp.class)
 @WebAppConfiguration
 @IntegrationTest
 @Transactional

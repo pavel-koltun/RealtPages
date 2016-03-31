@@ -39,9 +39,13 @@ public class ApartmentRentResource {
     private ApartmentRentService apartmentRentService;
     
     /**
-     * POST  /apartmentRents -> Create a new apartmentRent.
+     * POST  /apartment-rents : Create a new apartmentRent.
+     *
+     * @param apartmentRent the apartmentRent to create
+     * @return the ResponseEntity with status 201 (Created) and with body the new apartmentRent, or with status 400 (Bad Request) if the apartmentRent has already an ID
+     * @throws URISyntaxException if the Location URI syntax is incorrect
      */
-    @RequestMapping(value = "/apartmentRents",
+    @RequestMapping(value = "/apartment-rents",
         method = RequestMethod.POST,
         produces = MediaType.APPLICATION_JSON_VALUE)
     @Timed
@@ -51,15 +55,21 @@ public class ApartmentRentResource {
             return ResponseEntity.badRequest().headers(HeaderUtil.createFailureAlert("apartmentRent", "idexists", "A new apartmentRent cannot already have an ID")).body(null);
         }
         ApartmentRent result = apartmentRentService.save(apartmentRent);
-        return ResponseEntity.created(new URI("/api/apartmentRents/" + result.getId()))
+        return ResponseEntity.created(new URI("/api/apartment-rents/" + result.getId()))
             .headers(HeaderUtil.createEntityCreationAlert("apartmentRent", result.getId().toString()))
             .body(result);
     }
 
     /**
-     * PUT  /apartmentRents -> Updates an existing apartmentRent.
+     * PUT  /apartment-rents : Updates an existing apartmentRent.
+     *
+     * @param apartmentRent the apartmentRent to update
+     * @return the ResponseEntity with status 200 (OK) and with body the updated apartmentRent,
+     * or with status 400 (Bad Request) if the apartmentRent is not valid,
+     * or with status 500 (Internal Server Error) if the apartmentRent couldnt be updated
+     * @throws URISyntaxException if the Location URI syntax is incorrect
      */
-    @RequestMapping(value = "/apartmentRents",
+    @RequestMapping(value = "/apartment-rents",
         method = RequestMethod.PUT,
         produces = MediaType.APPLICATION_JSON_VALUE)
     @Timed
@@ -75,9 +85,13 @@ public class ApartmentRentResource {
     }
 
     /**
-     * GET  /apartmentRents -> get all the apartmentRents.
+     * GET  /apartment-rents : get all the apartmentRents.
+     *
+     * @param pageable the pagination information
+     * @return the ResponseEntity with status 200 (OK) and the list of apartmentRents in body
+     * @throws URISyntaxException if there is an error to generate the pagination HTTP headers
      */
-    @RequestMapping(value = "/apartmentRents",
+    @RequestMapping(value = "/apartment-rents",
         method = RequestMethod.GET,
         produces = MediaType.APPLICATION_JSON_VALUE)
     @Timed
@@ -85,14 +99,17 @@ public class ApartmentRentResource {
         throws URISyntaxException {
         log.debug("REST request to get a page of ApartmentRents");
         Page<ApartmentRent> page = apartmentRentService.findAll(pageable); 
-        HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(page, "/api/apartmentRents");
+        HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(page, "/api/apartment-rents");
         return new ResponseEntity<>(page.getContent(), headers, HttpStatus.OK);
     }
 
     /**
-     * GET  /apartmentRents/:id -> get the "id" apartmentRent.
+     * GET  /apartment-rents/:id : get the "id" apartmentRent.
+     *
+     * @param id the id of the apartmentRent to retrieve
+     * @return the ResponseEntity with status 200 (OK) and with body the apartmentRent, or with status 404 (Not Found)
      */
-    @RequestMapping(value = "/apartmentRents/{id}",
+    @RequestMapping(value = "/apartment-rents/{id}",
         method = RequestMethod.GET,
         produces = MediaType.APPLICATION_JSON_VALUE)
     @Timed
@@ -107,9 +124,12 @@ public class ApartmentRentResource {
     }
 
     /**
-     * DELETE  /apartmentRents/:id -> delete the "id" apartmentRent.
+     * DELETE  /apartment-rents/:id : delete the "id" apartmentRent.
+     *
+     * @param id the id of the apartmentRent to delete
+     * @return the ResponseEntity with status 200 (OK)
      */
-    @RequestMapping(value = "/apartmentRents/{id}",
+    @RequestMapping(value = "/apartment-rents/{id}",
         method = RequestMethod.DELETE,
         produces = MediaType.APPLICATION_JSON_VALUE)
     @Timed
@@ -120,15 +140,22 @@ public class ApartmentRentResource {
     }
 
     /**
-     * SEARCH  /_search/apartmentRents/:query -> search for the apartmentRent corresponding
+     * SEARCH  /_search/apartment-rents?query=:query : search for the apartmentRent corresponding
      * to the query.
+     *
+     * @param query the query of the apartmentRent search
+     * @return the result of the search
      */
-    @RequestMapping(value = "/_search/apartmentRents/{query:.+}",
+    @RequestMapping(value = "/_search/apartment-rents",
         method = RequestMethod.GET,
         produces = MediaType.APPLICATION_JSON_VALUE)
     @Timed
-    public List<ApartmentRent> searchApartmentRents(@PathVariable String query) {
-        log.debug("Request to search ApartmentRents for query {}", query);
-        return apartmentRentService.search(query);
+    public ResponseEntity<List<ApartmentRent>> searchApartmentRents(@RequestParam String query, Pageable pageable)
+        throws URISyntaxException {
+        log.debug("REST request to search for a page of ApartmentRents for query {}", query);
+        Page<ApartmentRent> page = apartmentRentService.search(query, pageable);
+        HttpHeaders headers = PaginationUtil.generateSearchPaginationHttpHeaders(query, page, "/api/_search/apartment-rents");
+        return new ResponseEntity<>(page.getContent(), headers, HttpStatus.OK);
     }
+
 }

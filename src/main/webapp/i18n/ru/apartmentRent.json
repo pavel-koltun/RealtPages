@@ -1,0 +1,23 @@
+{
+    "onlinerRealtPagesApp": {
+        "apartmentRent" : {
+            "home": {
+                "title": "ApartmentRents",
+                "createLabel": "Создать новый ApartmentRent",
+                "createOrEditLabel": "Создать или отредактировать ApartmentRent",
+                "search": "Найти ApartmentRent"
+            },
+            "created": "Новый ApartmentRent создан с идентификатором {{ param }}",
+            "updated": "ApartmentRent обновлен с идентификатором {{ param }}",
+            "deleted": "ApartmentRent удален с идентификатором {{ param }}",
+            "delete": {
+                "question": "Вы уверены что хотите удалить ApartmentRent {{ id }}?"
+            },
+            "detail": {
+                "title": "ApartmentRent"
+            },
+            "type": "Type",
+            "owner": "Owner"
+        }
+    }
+}

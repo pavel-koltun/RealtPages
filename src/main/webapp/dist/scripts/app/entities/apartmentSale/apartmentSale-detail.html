@@ -1,0 +1,86 @@
+
+<div>
+    <h2><span translate="onlinerrealtpagesApp.apartmentSale.detail.title">ApartmentSale</span> {{apartmentSale.id}}</h2>
+    <div class="table-responsive">
+        <table class="table table-striped">
+            <thead>
+            <tr>
+                <th translate="entity.detail.field">Field</th>
+                <th translate="entity.detail.value">Value</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr>
+                <td>
+                    <span translate="onlinerrealtpagesApp.apartmentSale.resale">Resale</span>
+                </td>
+                <td>
+                    <span class="form-control-static">{{apartmentSale.resale}}</span>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <span translate="onlinerrealtpagesApp.apartmentSale.rooms">Rooms</span>
+                </td>
+                <td>
+                    <span class="form-control-static">{{apartmentSale.rooms}}</span>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <span translate="onlinerrealtpagesApp.apartmentSale.floor">Floor</span>
+                </td>
+                <td>
+                    <span class="form-control-static">{{apartmentSale.floor}}</span>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <span translate="onlinerrealtpagesApp.apartmentSale.floors">Floors</span>
+                </td>
+                <td>
+                    <span class="form-control-static">{{apartmentSale.floors}}</span>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <span translate="onlinerrealtpagesApp.apartmentSale.areaTotal">AreaTotal</span>
+                </td>
+                <td>
+                    <span class="form-control-static">{{apartmentSale.areaTotal}}</span>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <span translate="onlinerrealtpagesApp.apartmentSale.areaLiving">AreaLiving</span>
+                </td>
+                <td>
+                    <span class="form-control-static">{{apartmentSale.areaLiving}}</span>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <span translate="onlinerrealtpagesApp.apartmentSale.areaKitchen">AreaKitchen</span>
+                </td>
+                <td>
+                    <span class="form-control-static">{{apartmentSale.areaKitchen}}</span>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <span translate="onlinerrealtpagesApp.apartmentSale.seller">Seller</span>
+                </td>
+                <td>
+                    <span class="form-control-static" translate="{{'onlinerrealtpagesApp.SellerType.' + apartmentSale.seller}}">{{apartmentSale.seller}}</span>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <button type="submit"
+            onclick="window.history.back()"
+            class="btn btn-info">
+        <span class="glyphicon glyphicon-arrow-left"></span>&nbsp;<span translate="entity.action.back"> Back</span>
+    </button>
+</div>

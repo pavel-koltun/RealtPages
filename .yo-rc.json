@@ -16,9 +16,14 @@
     "frontendBuilder": "grunt",
     "enableTranslation": true,
     "enableSocialSignIn": false,
-    "rememberMeKey": "5053ec4d7d0c15a676966f29e900a571be12e444",
     "testFrameworks": [
       "gatling"
+    ],
+    "jhipsterVersion": "3.0.0",
+    "serverPort": "8080",
+    "applicationType": "monolith",
+    "languages": [
+      "ru"
     ]
   }
 }

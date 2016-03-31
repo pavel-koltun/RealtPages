@@ -1,9 +1,10 @@
 package by.koltun.web.rest;
 
-import by.koltun.Application;
+import by.koltun.OnlinerRealtPagesApp;
 import by.koltun.domain.ApartmentSale;
 import by.koltun.repository.ApartmentSaleRepository;
 import by.koltun.service.ApartmentSaleService;
+import by.koltun.repository.search.ApartmentSaleSearchRepository;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -38,7 +39,7 @@ import by.koltun.domain.enumeration.SellerType;
  * @see ApartmentSaleResource
  */
 @RunWith(SpringJUnit4ClassRunner.class)
-@SpringApplicationConfiguration(classes = Application.class)
+@SpringApplicationConfiguration(classes = OnlinerRealtPagesApp.class)
 @WebAppConfiguration
 @IntegrationTest
 public class ApartmentSaleResourceIntTest {
@@ -64,7 +65,7 @@ public class ApartmentSaleResourceIntTest {
 
     private static final Double DEFAULT_AREA_KITCHEN = 0D;
     private static final Double UPDATED_AREA_KITCHEN = 1D;
-    
+
     private static final SellerType DEFAULT_SELLER = SellerType.OWNER;
     private static final SellerType UPDATED_SELLER = SellerType.AGENT;
 
@@ -73,6 +74,9 @@ public class ApartmentSaleResourceIntTest {
 
     @Inject
     private ApartmentSaleService apartmentSaleService;
+
+    @Inject
+    private ApartmentSaleSearchRepository apartmentSaleSearchRepository;
 
     @Inject
     private MappingJackson2HttpMessageConverter jacksonMessageConverter;
@@ -96,6 +100,7 @@ public class ApartmentSaleResourceIntTest {
 
     @Before
     public void initTest() {
+        apartmentSaleSearchRepository.deleteAll();
         apartmentSale = new ApartmentSale();
         apartmentSale.setResale(DEFAULT_RESALE);
         apartmentSale.setRooms(DEFAULT_ROOMS);
@@ -114,7 +119,7 @@ public class ApartmentSaleResourceIntTest {
 
         // Create the ApartmentSale
 
-        restApartmentSaleMockMvc.perform(post("/api/apartmentSales")
+        restApartmentSaleMockMvc.perform(post("/api/apartment-sales")
                 .contentType(TestUtil.APPLICATION_JSON_UTF8)
                 .content(TestUtil.convertObjectToJsonBytes(apartmentSale)))
                 .andExpect(status().isCreated());
@@ -131,6 +136,10 @@ public class ApartmentSaleResourceIntTest {
         assertThat(testApartmentSale.getAreaLiving()).isEqualTo(DEFAULT_AREA_LIVING);
         assertThat(testApartmentSale.getAreaKitchen()).isEqualTo(DEFAULT_AREA_KITCHEN);
         assertThat(testApartmentSale.getSeller()).isEqualTo(DEFAULT_SELLER);
+
+        // Validate the ApartmentSale in ElasticSearch
+        ApartmentSale apartmentSaleEs = apartmentSaleSearchRepository.findOne(testApartmentSale.getId());
+        assertThat(apartmentSaleEs).isEqualToComparingFieldByField(testApartmentSale);
     }
 
     @Test
@@ -142,7 +151,7 @@ public class ApartmentSaleResourceIntTest {
 
         // Create the ApartmentSale, which fails.
 
-        restApartmentSaleMockMvc.perform(post("/api/apartmentSales")
+        restApartmentSaleMockMvc.perform(post("/api/apartment-sales")
                 .contentType(TestUtil.APPLICATION_JSON_UTF8)
                 .content(TestUtil.convertObjectToJsonBytes(apartmentSale)))
                 .andExpect(status().isBadRequest());
@@ -160,7 +169,7 @@ public class ApartmentSaleResourceIntTest {
 
         // Create the ApartmentSale, which fails.
 
-        restApartmentSaleMockMvc.perform(post("/api/apartmentSales")
+        restApartmentSaleMockMvc.perform(post("/api/apartment-sales")
                 .contentType(TestUtil.APPLICATION_JSON_UTF8)
                 .content(TestUtil.convertObjectToJsonBytes(apartmentSale)))
                 .andExpect(status().isBadRequest());
@@ -178,7 +187,7 @@ public class ApartmentSaleResourceIntTest {
 
         // Create the ApartmentSale, which fails.
 
-        restApartmentSaleMockMvc.perform(post("/api/apartmentSales")
+        restApartmentSaleMockMvc.perform(post("/api/apartment-sales")
                 .contentType(TestUtil.APPLICATION_JSON_UTF8)
                 .content(TestUtil.convertObjectToJsonBytes(apartmentSale)))
                 .andExpect(status().isBadRequest());
@@ -196,7 +205,7 @@ public class ApartmentSaleResourceIntTest {
 
         // Create the ApartmentSale, which fails.
 
-        restApartmentSaleMockMvc.perform(post("/api/apartmentSales")
+        restApartmentSaleMockMvc.perform(post("/api/apartment-sales")
                 .contentType(TestUtil.APPLICATION_JSON_UTF8)
                 .content(TestUtil.convertObjectToJsonBytes(apartmentSale)))
                 .andExpect(status().isBadRequest());
@@ -214,7 +223,7 @@ public class ApartmentSaleResourceIntTest {
 
         // Create the ApartmentSale, which fails.
 
-        restApartmentSaleMockMvc.perform(post("/api/apartmentSales")
+        restApartmentSaleMockMvc.perform(post("/api/apartment-sales")
                 .contentType(TestUtil.APPLICATION_JSON_UTF8)
                 .content(TestUtil.convertObjectToJsonBytes(apartmentSale)))
                 .andExpect(status().isBadRequest());
@@ -232,7 +241,7 @@ public class ApartmentSaleResourceIntTest {
 
         // Create the ApartmentSale, which fails.
 
-        restApartmentSaleMockMvc.perform(post("/api/apartmentSales")
+        restApartmentSaleMockMvc.perform(post("/api/apartment-sales")
                 .contentType(TestUtil.APPLICATION_JSON_UTF8)
                 .content(TestUtil.convertObjectToJsonBytes(apartmentSale)))
                 .andExpect(status().isBadRequest());
@@ -250,7 +259,7 @@ public class ApartmentSaleResourceIntTest {
 
         // Create the ApartmentSale, which fails.
 
-        restApartmentSaleMockMvc.perform(post("/api/apartmentSales")
+        restApartmentSaleMockMvc.perform(post("/api/apartment-sales")
                 .contentType(TestUtil.APPLICATION_JSON_UTF8)
                 .content(TestUtil.convertObjectToJsonBytes(apartmentSale)))
                 .andExpect(status().isBadRequest());
@@ -268,7 +277,7 @@ public class ApartmentSaleResourceIntTest {
 
         // Create the ApartmentSale, which fails.
 
-        restApartmentSaleMockMvc.perform(post("/api/apartmentSales")
+        restApartmentSaleMockMvc.perform(post("/api/apartment-sales")
                 .contentType(TestUtil.APPLICATION_JSON_UTF8)
                 .content(TestUtil.convertObjectToJsonBytes(apartmentSale)))
                 .andExpect(status().isBadRequest());
@@ -284,7 +293,7 @@ public class ApartmentSaleResourceIntTest {
         apartmentSaleRepository.saveAndFlush(apartmentSale);
 
         // Get all the apartmentSales
-        restApartmentSaleMockMvc.perform(get("/api/apartmentSales?sort=id,desc"))
+        restApartmentSaleMockMvc.perform(get("/api/apartment-sales?sort=id,desc"))
                 .andExpect(status().isOk())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON))
                 .andExpect(jsonPath("$.[*].id").value(hasItem(apartmentSale.getId().intValue())))
@@ -305,7 +314,7 @@ public class ApartmentSaleResourceIntTest {
         apartmentSaleRepository.saveAndFlush(apartmentSale);
 
         // Get the apartmentSale
-        restApartmentSaleMockMvc.perform(get("/api/apartmentSales/{id}", apartmentSale.getId()))
+        restApartmentSaleMockMvc.perform(get("/api/apartment-sales/{id}", apartmentSale.getId()))
             .andExpect(status().isOk())
             .andExpect(content().contentType(MediaType.APPLICATION_JSON))
             .andExpect(jsonPath("$.id").value(apartmentSale.getId().intValue()))
@@ -323,7 +332,7 @@ public class ApartmentSaleResourceIntTest {
     @Transactional
     public void getNonExistingApartmentSale() throws Exception {
         // Get the apartmentSale
-        restApartmentSaleMockMvc.perform(get("/api/apartmentSales/{id}", Long.MAX_VALUE))
+        restApartmentSaleMockMvc.perform(get("/api/apartment-sales/{id}", Long.MAX_VALUE))
                 .andExpect(status().isNotFound());
     }
 
@@ -331,23 +340,25 @@ public class ApartmentSaleResourceIntTest {
     @Transactional
     public void updateApartmentSale() throws Exception {
         // Initialize the database
-        apartmentSaleRepository.saveAndFlush(apartmentSale);
+        apartmentSaleService.save(apartmentSale);
 
-		int databaseSizeBeforeUpdate = apartmentSaleRepository.findAll().size();
+        int databaseSizeBeforeUpdate = apartmentSaleRepository.findAll().size();
 
         // Update the apartmentSale
-        apartmentSale.setResale(UPDATED_RESALE);
-        apartmentSale.setRooms(UPDATED_ROOMS);
-        apartmentSale.setFloor(UPDATED_FLOOR);
-        apartmentSale.setFloors(UPDATED_FLOORS);
-        apartmentSale.setAreaTotal(UPDATED_AREA_TOTAL);
-        apartmentSale.setAreaLiving(UPDATED_AREA_LIVING);
-        apartmentSale.setAreaKitchen(UPDATED_AREA_KITCHEN);
-        apartmentSale.setSeller(UPDATED_SELLER);
+        ApartmentSale updatedApartmentSale = new ApartmentSale();
+        updatedApartmentSale.setId(apartmentSale.getId());
+        updatedApartmentSale.setResale(UPDATED_RESALE);
+        updatedApartmentSale.setRooms(UPDATED_ROOMS);
+        updatedApartmentSale.setFloor(UPDATED_FLOOR);
+        updatedApartmentSale.setFloors(UPDATED_FLOORS);
+        updatedApartmentSale.setAreaTotal(UPDATED_AREA_TOTAL);
+        updatedApartmentSale.setAreaLiving(UPDATED_AREA_LIVING);
+        updatedApartmentSale.setAreaKitchen(UPDATED_AREA_KITCHEN);
+        updatedApartmentSale.setSeller(UPDATED_SELLER);
 
-        restApartmentSaleMockMvc.perform(put("/api/apartmentSales")
+        restApartmentSaleMockMvc.perform(put("/api/apartment-sales")
                 .contentType(TestUtil.APPLICATION_JSON_UTF8)
-                .content(TestUtil.convertObjectToJsonBytes(apartmentSale)))
+                .content(TestUtil.convertObjectToJsonBytes(updatedApartmentSale)))
                 .andExpect(status().isOk());
 
         // Validate the ApartmentSale in the database
@@ -362,23 +373,52 @@ public class ApartmentSaleResourceIntTest {
         assertThat(testApartmentSale.getAreaLiving()).isEqualTo(UPDATED_AREA_LIVING);
         assertThat(testApartmentSale.getAreaKitchen()).isEqualTo(UPDATED_AREA_KITCHEN);
         assertThat(testApartmentSale.getSeller()).isEqualTo(UPDATED_SELLER);
+
+        // Validate the ApartmentSale in ElasticSearch
+        ApartmentSale apartmentSaleEs = apartmentSaleSearchRepository.findOne(testApartmentSale.getId());
+        assertThat(apartmentSaleEs).isEqualToComparingFieldByField(testApartmentSale);
     }
 
     @Test
     @Transactional
     public void deleteApartmentSale() throws Exception {
         // Initialize the database
-        apartmentSaleRepository.saveAndFlush(apartmentSale);
+        apartmentSaleService.save(apartmentSale);
 
-		int databaseSizeBeforeDelete = apartmentSaleRepository.findAll().size();
+        int databaseSizeBeforeDelete = apartmentSaleRepository.findAll().size();
 
         // Get the apartmentSale
-        restApartmentSaleMockMvc.perform(delete("/api/apartmentSales/{id}", apartmentSale.getId())
+        restApartmentSaleMockMvc.perform(delete("/api/apartment-sales/{id}", apartmentSale.getId())
                 .accept(TestUtil.APPLICATION_JSON_UTF8))
                 .andExpect(status().isOk());
+
+        // Validate ElasticSearch is empty
+        boolean apartmentSaleExistsInEs = apartmentSaleSearchRepository.exists(apartmentSale.getId());
+        assertThat(apartmentSaleExistsInEs).isFalse();
 
         // Validate the database is empty
         List<ApartmentSale> apartmentSales = apartmentSaleRepository.findAll();
         assertThat(apartmentSales).hasSize(databaseSizeBeforeDelete - 1);
+    }
+
+    @Test
+    @Transactional
+    public void searchApartmentSale() throws Exception {
+        // Initialize the database
+        apartmentSaleService.save(apartmentSale);
+
+        // Search the apartmentSale
+        restApartmentSaleMockMvc.perform(get("/api/_search/apartment-sales?query=id:" + apartmentSale.getId()))
+            .andExpect(status().isOk())
+            .andExpect(content().contentType(MediaType.APPLICATION_JSON))
+            .andExpect(jsonPath("$.[*].id").value(hasItem(apartmentSale.getId().intValue())))
+            .andExpect(jsonPath("$.[*].resale").value(hasItem(DEFAULT_RESALE.booleanValue())))
+            .andExpect(jsonPath("$.[*].rooms").value(hasItem(DEFAULT_ROOMS)))
+            .andExpect(jsonPath("$.[*].floor").value(hasItem(DEFAULT_FLOOR)))
+            .andExpect(jsonPath("$.[*].floors").value(hasItem(DEFAULT_FLOORS)))
+            .andExpect(jsonPath("$.[*].areaTotal").value(hasItem(DEFAULT_AREA_TOTAL.doubleValue())))
+            .andExpect(jsonPath("$.[*].areaLiving").value(hasItem(DEFAULT_AREA_LIVING.doubleValue())))
+            .andExpect(jsonPath("$.[*].areaKitchen").value(hasItem(DEFAULT_AREA_KITCHEN.doubleValue())))
+            .andExpect(jsonPath("$.[*].seller").value(hasItem(DEFAULT_SELLER.toString())));
     }
 }

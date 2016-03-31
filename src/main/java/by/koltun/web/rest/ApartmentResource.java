@@ -43,7 +43,11 @@ public class ApartmentResource {
     private ApartmentSearchRepository apartmentSearchRepository;
     
     /**
-     * POST  /apartments -> Create a new apartment.
+     * POST  /apartments : Create a new apartment.
+     *
+     * @param apartment the apartment to create
+     * @return the ResponseEntity with status 201 (Created) and with body the new apartment, or with status 400 (Bad Request) if the apartment has already an ID
+     * @throws URISyntaxException if the Location URI syntax is incorrect
      */
     @RequestMapping(value = "/apartments",
         method = RequestMethod.POST,
@@ -62,7 +66,13 @@ public class ApartmentResource {
     }
 
     /**
-     * PUT  /apartments -> Updates an existing apartment.
+     * PUT  /apartments : Updates an existing apartment.
+     *
+     * @param apartment the apartment to update
+     * @return the ResponseEntity with status 200 (OK) and with body the updated apartment,
+     * or with status 400 (Bad Request) if the apartment is not valid,
+     * or with status 500 (Internal Server Error) if the apartment couldnt be updated
+     * @throws URISyntaxException if the Location URI syntax is incorrect
      */
     @RequestMapping(value = "/apartments",
         method = RequestMethod.PUT,
@@ -81,7 +91,11 @@ public class ApartmentResource {
     }
 
     /**
-     * GET  /apartments -> get all the apartments.
+     * GET  /apartments : get all the apartments.
+     *
+     * @param pageable the pagination information
+     * @return the ResponseEntity with status 200 (OK) and the list of apartments in body
+     * @throws URISyntaxException if there is an error to generate the pagination HTTP headers
      */
     @RequestMapping(value = "/apartments",
         method = RequestMethod.GET,
@@ -96,7 +110,10 @@ public class ApartmentResource {
     }
 
     /**
-     * GET  /apartments/:id -> get the "id" apartment.
+     * GET  /apartments/:id : get the "id" apartment.
+     *
+     * @param id the id of the apartment to retrieve
+     * @return the ResponseEntity with status 200 (OK) and with body the apartment, or with status 404 (Not Found)
      */
     @RequestMapping(value = "/apartments/{id}",
         method = RequestMethod.GET,
@@ -113,7 +130,10 @@ public class ApartmentResource {
     }
 
     /**
-     * DELETE  /apartments/:id -> delete the "id" apartment.
+     * DELETE  /apartments/:id : delete the "id" apartment.
+     *
+     * @param id the id of the apartment to delete
+     * @return the ResponseEntity with status 200 (OK)
      */
     @RequestMapping(value = "/apartments/{id}",
         method = RequestMethod.DELETE,
@@ -127,17 +147,22 @@ public class ApartmentResource {
     }
 
     /**
-     * SEARCH  /_search/apartments/:query -> search for the apartment corresponding
+     * SEARCH  /_search/apartments?query=:query : search for the apartment corresponding
      * to the query.
+     *
+     * @param query the query of the apartment search
+     * @return the result of the search
      */
-    @RequestMapping(value = "/_search/apartments/{query:.+}",
+    @RequestMapping(value = "/_search/apartments",
         method = RequestMethod.GET,
         produces = MediaType.APPLICATION_JSON_VALUE)
     @Timed
-    public List<Apartment> searchApartments(@PathVariable String query) {
-        log.debug("REST request to search Apartments for query {}", query);
-        return StreamSupport
-            .stream(apartmentSearchRepository.search(queryStringQuery(query)).spliterator(), false)
-            .collect(Collectors.toList());
+    public ResponseEntity<List<Apartment>> searchApartments(@RequestParam String query, Pageable pageable)
+        throws URISyntaxException {
+        log.debug("REST request to search for a page of Apartments for query {}", query);
+        Page<Apartment> page = apartmentSearchRepository.search(queryStringQuery(query), pageable);
+        HttpHeaders headers = PaginationUtil.generateSearchPaginationHttpHeaders(query, page, "/api/_search/apartments");
+        return new ResponseEntity<>(page.getContent(), headers, HttpStatus.OK);
     }
+
 }

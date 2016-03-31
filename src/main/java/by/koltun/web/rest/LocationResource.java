@@ -39,7 +39,11 @@ public class LocationResource {
     private LocationService locationService;
     
     /**
-     * POST  /locations -> Create a new location.
+     * POST  /locations : Create a new location.
+     *
+     * @param location the location to create
+     * @return the ResponseEntity with status 201 (Created) and with body the new location, or with status 400 (Bad Request) if the location has already an ID
+     * @throws URISyntaxException if the Location URI syntax is incorrect
      */
     @RequestMapping(value = "/locations",
         method = RequestMethod.POST,
@@ -57,7 +61,13 @@ public class LocationResource {
     }
 
     /**
-     * PUT  /locations -> Updates an existing location.
+     * PUT  /locations : Updates an existing location.
+     *
+     * @param location the location to update
+     * @return the ResponseEntity with status 200 (OK) and with body the updated location,
+     * or with status 400 (Bad Request) if the location is not valid,
+     * or with status 500 (Internal Server Error) if the location couldnt be updated
+     * @throws URISyntaxException if the Location URI syntax is incorrect
      */
     @RequestMapping(value = "/locations",
         method = RequestMethod.PUT,
@@ -75,7 +85,11 @@ public class LocationResource {
     }
 
     /**
-     * GET  /locations -> get all the locations.
+     * GET  /locations : get all the locations.
+     *
+     * @param pageable the pagination information
+     * @return the ResponseEntity with status 200 (OK) and the list of locations in body
+     * @throws URISyntaxException if there is an error to generate the pagination HTTP headers
      */
     @RequestMapping(value = "/locations",
         method = RequestMethod.GET,
@@ -90,7 +104,10 @@ public class LocationResource {
     }
 
     /**
-     * GET  /locations/:id -> get the "id" location.
+     * GET  /locations/:id : get the "id" location.
+     *
+     * @param id the id of the location to retrieve
+     * @return the ResponseEntity with status 200 (OK) and with body the location, or with status 404 (Not Found)
      */
     @RequestMapping(value = "/locations/{id}",
         method = RequestMethod.GET,
@@ -107,7 +124,10 @@ public class LocationResource {
     }
 
     /**
-     * DELETE  /locations/:id -> delete the "id" location.
+     * DELETE  /locations/:id : delete the "id" location.
+     *
+     * @param id the id of the location to delete
+     * @return the ResponseEntity with status 200 (OK)
      */
     @RequestMapping(value = "/locations/{id}",
         method = RequestMethod.DELETE,
@@ -120,15 +140,22 @@ public class LocationResource {
     }
 
     /**
-     * SEARCH  /_search/locations/:query -> search for the location corresponding
+     * SEARCH  /_search/locations?query=:query : search for the location corresponding
      * to the query.
+     *
+     * @param query the query of the location search
+     * @return the result of the search
      */
-    @RequestMapping(value = "/_search/locations/{query:.+}",
+    @RequestMapping(value = "/_search/locations",
         method = RequestMethod.GET,
         produces = MediaType.APPLICATION_JSON_VALUE)
     @Timed
-    public List<Location> searchLocations(@PathVariable String query) {
-        log.debug("Request to search Locations for query {}", query);
-        return locationService.search(query);
+    public ResponseEntity<List<Location>> searchLocations(@RequestParam String query, Pageable pageable)
+        throws URISyntaxException {
+        log.debug("REST request to search for a page of Locations for query {}", query);
+        Page<Location> page = locationService.search(query, pageable);
+        HttpHeaders headers = PaginationUtil.generateSearchPaginationHttpHeaders(query, page, "/api/_search/locations");
+        return new ResponseEntity<>(page.getContent(), headers, HttpStatus.OK);
     }
+
 }

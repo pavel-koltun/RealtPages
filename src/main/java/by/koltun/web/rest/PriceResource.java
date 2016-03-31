@@ -43,7 +43,11 @@ public class PriceResource {
     private PriceSearchRepository priceSearchRepository;
     
     /**
-     * POST  /prices -> Create a new price.
+     * POST  /prices : Create a new price.
+     *
+     * @param price the price to create
+     * @return the ResponseEntity with status 201 (Created) and with body the new price, or with status 400 (Bad Request) if the price has already an ID
+     * @throws URISyntaxException if the Location URI syntax is incorrect
      */
     @RequestMapping(value = "/prices",
         method = RequestMethod.POST,
@@ -62,7 +66,13 @@ public class PriceResource {
     }
 
     /**
-     * PUT  /prices -> Updates an existing price.
+     * PUT  /prices : Updates an existing price.
+     *
+     * @param price the price to update
+     * @return the ResponseEntity with status 200 (OK) and with body the updated price,
+     * or with status 400 (Bad Request) if the price is not valid,
+     * or with status 500 (Internal Server Error) if the price couldnt be updated
+     * @throws URISyntaxException if the Location URI syntax is incorrect
      */
     @RequestMapping(value = "/prices",
         method = RequestMethod.PUT,
@@ -81,7 +91,11 @@ public class PriceResource {
     }
 
     /**
-     * GET  /prices -> get all the prices.
+     * GET  /prices : get all the prices.
+     *
+     * @param pageable the pagination information
+     * @return the ResponseEntity with status 200 (OK) and the list of prices in body
+     * @throws URISyntaxException if there is an error to generate the pagination HTTP headers
      */
     @RequestMapping(value = "/prices",
         method = RequestMethod.GET,
@@ -96,7 +110,10 @@ public class PriceResource {
     }
 
     /**
-     * GET  /prices/:id -> get the "id" price.
+     * GET  /prices/:id : get the "id" price.
+     *
+     * @param id the id of the price to retrieve
+     * @return the ResponseEntity with status 200 (OK) and with body the price, or with status 404 (Not Found)
      */
     @RequestMapping(value = "/prices/{id}",
         method = RequestMethod.GET,
@@ -113,7 +130,10 @@ public class PriceResource {
     }
 
     /**
-     * DELETE  /prices/:id -> delete the "id" price.
+     * DELETE  /prices/:id : delete the "id" price.
+     *
+     * @param id the id of the price to delete
+     * @return the ResponseEntity with status 200 (OK)
      */
     @RequestMapping(value = "/prices/{id}",
         method = RequestMethod.DELETE,
@@ -127,17 +147,22 @@ public class PriceResource {
     }
 
     /**
-     * SEARCH  /_search/prices/:query -> search for the price corresponding
+     * SEARCH  /_search/prices?query=:query : search for the price corresponding
      * to the query.
+     *
+     * @param query the query of the price search
+     * @return the result of the search
      */
-    @RequestMapping(value = "/_search/prices/{query:.+}",
+    @RequestMapping(value = "/_search/prices",
         method = RequestMethod.GET,
         produces = MediaType.APPLICATION_JSON_VALUE)
     @Timed
-    public List<Price> searchPrices(@PathVariable String query) {
-        log.debug("REST request to search Prices for query {}", query);
-        return StreamSupport
-            .stream(priceSearchRepository.search(queryStringQuery(query)).spliterator(), false)
-            .collect(Collectors.toList());
+    public ResponseEntity<List<Price>> searchPrices(@RequestParam String query, Pageable pageable)
+        throws URISyntaxException {
+        log.debug("REST request to search for a page of Prices for query {}", query);
+        Page<Price> page = priceSearchRepository.search(queryStringQuery(query), pageable);
+        HttpHeaders headers = PaginationUtil.generateSearchPaginationHttpHeaders(query, page, "/api/_search/prices");
+        return new ResponseEntity<>(page.getContent(), headers, HttpStatus.OK);
     }
+
 }

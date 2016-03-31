@@ -1,0 +1,91 @@
+<div>
+    <h2 translate="onlinerRealtPagesApp.apartmentSale.home.title">ApartmentSales</h2>
+    <jhi-alert></jhi-alert>
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-xs-4 no-padding-left">
+                <button class="btn btn-primary" ui-sref="apartment-sale.new" >
+                    <span class="glyphicon glyphicon-plus"></span>
+                    <span class="hidden-xs"  translate="onlinerRealtPagesApp.apartmentSale.home.createLabel">
+                        Create new ApartmentSale
+                    </span>
+                </button>
+            </div>
+            <div class="col-xs-8 no-padding-right">
+                <form name="searchForm" class="form-inline">
+                    <div class="input-group pull-right" >
+                        <input type="text" class="form-control" ng-model="vm.searchQuery" id="searchQuery" placeholder="{{ 'onlinerRealtPagesApp.apartmentSale.home.search' | translate }}">
+                        <span  class="input-group-btn width-min" >
+                            <button class="btn btn-info" ng-click="vm.search(vm.searchQuery)">
+                                <span class="glyphicon glyphicon-search"></span>
+                            </button>
+                        </span>
+                        <span class="input-group-btn width-min" ng-if="vm.currentSearch">
+                            <button class="btn btn-info" ng-click="vm.clear()">
+                                <span class="glyphicon glyphicon-trash"></span>
+                            </button>
+                        </span>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+    <br/>
+    <div class="table-responsive">
+        <table class="jh-table table table-striped">
+            <thead>
+                <tr jh-sort="vm.predicate" ascending="vm.reverse" callback="vm.transition()">
+                    <th jh-sort-by="id"><span translate="global.field.id">ID</span> <span class="glyphicon glyphicon-sort"></span></th>
+                    <th jh-sort-by="resale"><span translate="onlinerRealtPagesApp.apartmentSale.resale">Resale</span> <span class="glyphicon glyphicon-sort"></span></th>
+                    <th jh-sort-by="rooms"><span translate="onlinerRealtPagesApp.apartmentSale.rooms">Rooms</span> <span class="glyphicon glyphicon-sort"></span></th>
+                    <th jh-sort-by="floor"><span translate="onlinerRealtPagesApp.apartmentSale.floor">Floor</span> <span class="glyphicon glyphicon-sort"></span></th>
+                    <th jh-sort-by="floors"><span translate="onlinerRealtPagesApp.apartmentSale.floors">Floors</span> <span class="glyphicon glyphicon-sort"></span></th>
+                    <th jh-sort-by="areaTotal"><span translate="onlinerRealtPagesApp.apartmentSale.areaTotal">AreaTotal</span> <span class="glyphicon glyphicon-sort"></span></th>
+                    <th jh-sort-by="areaLiving"><span translate="onlinerRealtPagesApp.apartmentSale.areaLiving">AreaLiving</span> <span class="glyphicon glyphicon-sort"></span></th>
+                    <th jh-sort-by="areaKitchen"><span translate="onlinerRealtPagesApp.apartmentSale.areaKitchen">AreaKitchen</span> <span class="glyphicon glyphicon-sort"></span></th>
+                    <th jh-sort-by="seller"><span translate="onlinerRealtPagesApp.apartmentSale.seller">Seller</span> <span class="glyphicon glyphicon-sort"></span></th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr ng-repeat="apartmentSale in vm.apartmentSales track by apartmentSale.id">
+                    <td><a ui-sref="apartment-sale-detail({id:apartmentSale.id})">{{apartmentSale.id}}</a></td>
+                    <td>{{apartmentSale.resale}}</td>
+                    <td>{{apartmentSale.rooms}}</td>
+                    <td>{{apartmentSale.floor}}</td>
+                    <td>{{apartmentSale.floors}}</td>
+                    <td>{{apartmentSale.areaTotal}}</td>
+                    <td>{{apartmentSale.areaLiving}}</td>
+                    <td>{{apartmentSale.areaKitchen}}</td>
+                    <td translate="{{'onlinerRealtPagesApp.SellerType.' + apartmentSale.seller}}">{{apartmentSale.seller}}</td>
+                    <td class="text-right">
+                        <div class="btn-group flex-btn-group-container">
+                            <button type="submit"
+                                    ui-sref="apartment-sale-detail({id:apartmentSale.id})"
+                                    class="btn btn-info btn-sm">
+                                <span class="glyphicon glyphicon-eye-open"></span>
+                                <span class="hidden-xs hidden-sm" translate="entity.action.view"></span>
+                            </button>
+                            <button type="submit"
+                                    ui-sref="apartment-sale.edit({id:apartmentSale.id})"
+                                    class="btn btn-primary btn-sm">
+                                <span class="glyphicon glyphicon-pencil"></span>
+                                <span class="hidden-xs hidden-sm" translate="entity.action.edit"></span>
+                            </button>
+                            <button type="submit"
+                                    ui-sref="apartment-sale.delete({id:apartmentSale.id})"
+                                    class="btn btn-danger btn-sm">
+                                <span class="glyphicon glyphicon-remove-circle"></span>
+                                <span class="hidden-xs hidden-sm" translate="entity.action.delete"></span>
+                            </button>
+                        </div>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+    <div class="text-center">
+        <jhi-item-count page="vm.page" total="vm.queryCount"></jhi-item-count>
+    </div>
+    <uib-pager total-items="vm.totalItems" ng-model="vm.page" ng-change="vm.transition()"></uib-pager>
+</div>

@@ -35,7 +35,7 @@ class LocationGatlingTest extends Simulation {
         "Accept" -> """application/json"""
     )
 
-        val authorization_header = "Basic " + Base64.getEncoder.encodeToString("OnlinerRealtPagesapp:mySecretOAuthSecret".getBytes(StandardCharsets.UTF_8))
+    val authorization_header = "Basic " + Base64.getEncoder.encodeToString("OnlinerRealtPagesapp:mySecretOAuthSecret".getBytes(StandardCharsets.UTF_8))
 
     val headers_http_authentication = Map(
         "Content-Type" -> """application/x-www-form-urlencoded""",
@@ -52,7 +52,7 @@ class LocationGatlingTest extends Simulation {
         .exec(http("First unauthenticated request")
         .get("/api/account")
         .headers(headers_http)
-        .check(status.is(401)))
+        .check(status.is(401))).exitHereIfFailed
         .pause(10)
         .exec(http("Authentication")
         .post("/oauth/token")
@@ -64,7 +64,7 @@ class LocationGatlingTest extends Simulation {
         .formParam("client_secret", "mySecretOAuthSecret")
         .formParam("client_id", "OnlinerRealtPagesapp")
         .formParam("submit", "Login")
-        .check(jsonPath("$.access_token").saveAs("access_token")))
+        .check(jsonPath("$.access_token").saveAs("access_token"))).exitHereIfFailed
         .pause(1)
         .exec(http("Authenticated request")
         .get("/api/account")
@@ -82,7 +82,7 @@ class LocationGatlingTest extends Simulation {
             .headers(headers_http_authenticated)
             .body(StringBody("""{"id":null, "address":"SAMPLE_TEXT", "latitude":null, "longitude":null}""")).asJSON
             .check(status.is(201))
-            .check(headerRegex("Location", "(.*)").saveAs("new_location_url")))
+            .check(headerRegex("Location", "(.*)").saveAs("new_location_url"))).exitHereIfFailed
             .pause(10)
             .repeat(5) {
                 exec(http("Get created location")

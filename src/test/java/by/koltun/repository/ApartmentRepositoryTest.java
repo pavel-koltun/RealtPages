@@ -1,6 +1,6 @@
 package by.koltun.repository;
 
-import by.koltun.Application;
+import by.koltun.OnlinerRealtPagesApp;
 import by.koltun.domain.*;
 import by.koltun.domain.ApartmentSale;
 import by.koltun.service.onliner.ApartmentService;
@@ -36,7 +36,7 @@ import static org.junit.Assert.*;
  * {@link ApartmentRepository} test
  */
 @RunWith(SpringJUnit4ClassRunner.class)
-@SpringApplicationConfiguration(classes = Application.class)
+@SpringApplicationConfiguration(classes = OnlinerRealtPagesApp.class)
 @WebAppConfiguration
 @IntegrationTest
 @Transactional

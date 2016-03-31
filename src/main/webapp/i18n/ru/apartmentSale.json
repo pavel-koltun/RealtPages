@@ -1,0 +1,29 @@
+{
+    "onlinerRealtPagesApp": {
+        "apartmentSale" : {
+            "home": {
+                "title": "ApartmentSales",
+                "createLabel": "Создать новый ApartmentSale",
+                "createOrEditLabel": "Создать или отредактировать ApartmentSale",
+                "search": "Найти ApartmentSale"
+            },
+            "created": "Новый ApartmentSale создан с идентификатором {{ param }}",
+            "updated": "ApartmentSale обновлен с идентификатором {{ param }}",
+            "deleted": "ApartmentSale удален с идентификатором {{ param }}",
+            "delete": {
+                "question": "Вы уверены что хотите удалить ApartmentSale {{ id }}?"
+            },
+            "detail": {
+                "title": "ApartmentSale"
+            },
+            "resale": "Resale",
+            "rooms": "Rooms",
+            "floor": "Floor",
+            "floors": "Floors",
+            "areaTotal": "AreaTotal",
+            "areaLiving": "AreaLiving",
+            "areaKitchen": "AreaKitchen",
+            "seller": "Seller"
+        }
+    }
+}

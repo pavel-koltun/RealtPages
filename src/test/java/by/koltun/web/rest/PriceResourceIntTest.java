@@ -1,6 +1,6 @@
 package by.koltun.web.rest;
 
-import by.koltun.Application;
+import by.koltun.OnlinerRealtPagesApp;
 import by.koltun.domain.Price;
 import by.koltun.repository.PriceRepository;
 import by.koltun.repository.search.PriceSearchRepository;
@@ -42,12 +42,12 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
  * @see PriceResource
  */
 @RunWith(SpringJUnit4ClassRunner.class)
-@SpringApplicationConfiguration(classes = Application.class)
+@SpringApplicationConfiguration(classes = OnlinerRealtPagesApp.class)
 @WebAppConfiguration
 @IntegrationTest
 public class PriceResourceIntTest {
 
-    private static final DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ISO_OFFSET_DATE_TIME.withZone(ZoneId.of("Z"));
+    private static final DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'").withZone(ZoneId.of("Z"));
 
 
     private static final BigDecimal DEFAULT_PRICE_USD = new BigDecimal(1);
@@ -89,6 +89,7 @@ public class PriceResourceIntTest {
 
     @Before
     public void initTest() {
+        priceSearchRepository.deleteAll();
         price = new Price();
         price.setPriceUsd(DEFAULT_PRICE_USD);
         price.setPriceRuble(DEFAULT_PRICE_RUBLE);
@@ -114,6 +115,10 @@ public class PriceResourceIntTest {
         assertThat(testPrice.getPriceUsd()).isEqualTo(DEFAULT_PRICE_USD);
         assertThat(testPrice.getPriceRuble()).isEqualTo(DEFAULT_PRICE_RUBLE);
         assertThat(testPrice.getUpdated()).isEqualTo(DEFAULT_CREATED);
+
+        // Validate the Price in ElasticSearch
+        Price priceEs = priceSearchRepository.findOne(testPrice.getId());
+        assertThat(priceEs).isEqualToComparingFieldByField(testPrice);
     }
 
     @Test
@@ -215,17 +220,19 @@ public class PriceResourceIntTest {
     public void updatePrice() throws Exception {
         // Initialize the database
         priceRepository.saveAndFlush(price);
-
-		int databaseSizeBeforeUpdate = priceRepository.findAll().size();
+        priceSearchRepository.save(price);
+        int databaseSizeBeforeUpdate = priceRepository.findAll().size();
 
         // Update the price
-        price.setPriceUsd(UPDATED_PRICE_USD);
-        price.setPriceRuble(UPDATED_PRICE_RUBLE);
-        price.setUpdated(UPDATED_CREATED);
+        Price updatedPrice = new Price();
+        updatedPrice.setId(price.getId());
+        updatedPrice.setPriceUsd(UPDATED_PRICE_USD);
+        updatedPrice.setPriceRuble(UPDATED_PRICE_RUBLE);
+        updatedPrice.setUpdated(UPDATED_CREATED);
 
         restPriceMockMvc.perform(put("/api/prices")
                 .contentType(TestUtil.APPLICATION_JSON_UTF8)
-                .content(TestUtil.convertObjectToJsonBytes(price)))
+                .content(TestUtil.convertObjectToJsonBytes(updatedPrice)))
                 .andExpect(status().isOk());
 
         // Validate the Price in the database
@@ -235,6 +242,10 @@ public class PriceResourceIntTest {
         assertThat(testPrice.getPriceUsd()).isEqualTo(UPDATED_PRICE_USD);
         assertThat(testPrice.getPriceRuble()).isEqualTo(UPDATED_PRICE_RUBLE);
         assertThat(testPrice.getUpdated()).isEqualTo(UPDATED_CREATED);
+
+        // Validate the Price in ElasticSearch
+        Price priceEs = priceSearchRepository.findOne(testPrice.getId());
+        assertThat(priceEs).isEqualToComparingFieldByField(testPrice);
     }
 
     @Test
@@ -242,16 +253,37 @@ public class PriceResourceIntTest {
     public void deletePrice() throws Exception {
         // Initialize the database
         priceRepository.saveAndFlush(price);
-
-		int databaseSizeBeforeDelete = priceRepository.findAll().size();
+        priceSearchRepository.save(price);
+        int databaseSizeBeforeDelete = priceRepository.findAll().size();
 
         // Get the price
         restPriceMockMvc.perform(delete("/api/prices/{id}", price.getId())
                 .accept(TestUtil.APPLICATION_JSON_UTF8))
                 .andExpect(status().isOk());
 
+        // Validate ElasticSearch is empty
+        boolean priceExistsInEs = priceSearchRepository.exists(price.getId());
+        assertThat(priceExistsInEs).isFalse();
+
         // Validate the database is empty
         List<Price> prices = priceRepository.findAll();
         assertThat(prices).hasSize(databaseSizeBeforeDelete - 1);
+    }
+
+    @Test
+    @Transactional
+    public void searchPrice() throws Exception {
+        // Initialize the database
+        priceRepository.saveAndFlush(price);
+        priceSearchRepository.save(price);
+
+        // Search the price
+        restPriceMockMvc.perform(get("/api/_search/prices?query=id:" + price.getId()))
+            .andExpect(status().isOk())
+            .andExpect(content().contentType(MediaType.APPLICATION_JSON))
+            .andExpect(jsonPath("$.[*].id").value(hasItem(price.getId().intValue())))
+            .andExpect(jsonPath("$.[*].priceUsd").value(hasItem(DEFAULT_PRICE_USD.intValue())))
+            .andExpect(jsonPath("$.[*].priceRuble").value(hasItem(DEFAULT_PRICE_RUBLE.intValue())))
+            .andExpect(jsonPath("$.[*].created").value(hasItem(DEFAULT_CREATED_STR)));
     }
 }

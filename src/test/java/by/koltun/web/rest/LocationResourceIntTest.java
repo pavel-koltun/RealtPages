@@ -1,9 +1,10 @@
 package by.koltun.web.rest;
 
-import by.koltun.Application;
+import by.koltun.OnlinerRealtPagesApp;
 import by.koltun.domain.Location;
 import by.koltun.repository.LocationRepository;
 import by.koltun.service.LocationService;
+import by.koltun.repository.search.LocationSearchRepository;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -37,7 +38,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
  * @see LocationResource
  */
 @RunWith(SpringJUnit4ClassRunner.class)
-@SpringApplicationConfiguration(classes = Application.class)
+@SpringApplicationConfiguration(classes = OnlinerRealtPagesApp.class)
 @WebAppConfiguration
 @IntegrationTest
 public class LocationResourceIntTest {
@@ -56,6 +57,9 @@ public class LocationResourceIntTest {
 
     @Inject
     private LocationService locationService;
+
+    @Inject
+    private LocationSearchRepository locationSearchRepository;
 
     @Inject
     private MappingJackson2HttpMessageConverter jacksonMessageConverter;
@@ -79,6 +83,7 @@ public class LocationResourceIntTest {
 
     @Before
     public void initTest() {
+        locationSearchRepository.deleteAll();
         location = new Location();
         location.setAddress(DEFAULT_ADDRESS);
         location.setLatitude(DEFAULT_LATITUDE);
@@ -104,6 +109,10 @@ public class LocationResourceIntTest {
         assertThat(testLocation.getAddress()).isEqualTo(DEFAULT_ADDRESS);
         assertThat(testLocation.getLatitude()).isEqualTo(DEFAULT_LATITUDE);
         assertThat(testLocation.getLongitude()).isEqualTo(DEFAULT_LONGITUDE);
+
+        // Validate the Location in ElasticSearch
+        Location locationEs = locationSearchRepository.findOne(testLocation.getId());
+        assertThat(locationEs).isEqualToComparingFieldByField(testLocation);
     }
 
     @Test
@@ -204,18 +213,20 @@ public class LocationResourceIntTest {
     @Transactional
     public void updateLocation() throws Exception {
         // Initialize the database
-        locationRepository.saveAndFlush(location);
+        locationService.save(location);
 
-		int databaseSizeBeforeUpdate = locationRepository.findAll().size();
+        int databaseSizeBeforeUpdate = locationRepository.findAll().size();
 
         // Update the location
-        location.setAddress(UPDATED_ADDRESS);
-        location.setLatitude(UPDATED_LATITUDE);
-        location.setLongitude(UPDATED_LONGITUDE);
+        Location updatedLocation = new Location();
+        updatedLocation.setId(location.getId());
+        updatedLocation.setAddress(UPDATED_ADDRESS);
+        updatedLocation.setLatitude(UPDATED_LATITUDE);
+        updatedLocation.setLongitude(UPDATED_LONGITUDE);
 
         restLocationMockMvc.perform(put("/api/locations")
                 .contentType(TestUtil.APPLICATION_JSON_UTF8)
-                .content(TestUtil.convertObjectToJsonBytes(location)))
+                .content(TestUtil.convertObjectToJsonBytes(updatedLocation)))
                 .andExpect(status().isOk());
 
         // Validate the Location in the database
@@ -225,23 +236,47 @@ public class LocationResourceIntTest {
         assertThat(testLocation.getAddress()).isEqualTo(UPDATED_ADDRESS);
         assertThat(testLocation.getLatitude()).isEqualTo(UPDATED_LATITUDE);
         assertThat(testLocation.getLongitude()).isEqualTo(UPDATED_LONGITUDE);
+
+        // Validate the Location in ElasticSearch
+        Location locationEs = locationSearchRepository.findOne(testLocation.getId());
+        assertThat(locationEs).isEqualToComparingFieldByField(testLocation);
     }
 
     @Test
     @Transactional
     public void deleteLocation() throws Exception {
         // Initialize the database
-        locationRepository.saveAndFlush(location);
+        locationService.save(location);
 
-		int databaseSizeBeforeDelete = locationRepository.findAll().size();
+        int databaseSizeBeforeDelete = locationRepository.findAll().size();
 
         // Get the location
         restLocationMockMvc.perform(delete("/api/locations/{id}", location.getId())
                 .accept(TestUtil.APPLICATION_JSON_UTF8))
                 .andExpect(status().isOk());
 
+        // Validate ElasticSearch is empty
+        boolean locationExistsInEs = locationSearchRepository.exists(location.getId());
+        assertThat(locationExistsInEs).isFalse();
+
         // Validate the database is empty
         List<Location> locations = locationRepository.findAll();
         assertThat(locations).hasSize(databaseSizeBeforeDelete - 1);
+    }
+
+    @Test
+    @Transactional
+    public void searchLocation() throws Exception {
+        // Initialize the database
+        locationService.save(location);
+
+        // Search the location
+        restLocationMockMvc.perform(get("/api/_search/locations?query=id:" + location.getId()))
+            .andExpect(status().isOk())
+            .andExpect(content().contentType(MediaType.APPLICATION_JSON))
+            .andExpect(jsonPath("$.[*].id").value(hasItem(location.getId().intValue())))
+            .andExpect(jsonPath("$.[*].address").value(hasItem(DEFAULT_ADDRESS.toString())))
+            .andExpect(jsonPath("$.[*].latitude").value(hasItem(DEFAULT_LATITUDE.doubleValue())))
+            .andExpect(jsonPath("$.[*].longitude").value(hasItem(DEFAULT_LONGITUDE.doubleValue())));
     }
 }

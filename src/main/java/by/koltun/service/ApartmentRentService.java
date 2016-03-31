@@ -12,7 +12,6 @@ import org.springframework.stereotype.Service;
 
 import javax.inject.Inject;
 import java.util.List;
-import java.util.Optional;
 import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
 
@@ -35,6 +34,8 @@ public class ApartmentRentService {
     
     /**
      * Save a apartmentRent.
+     * 
+     * @param apartmentRent the entity to save
      * @return the persisted entity
      */
     public ApartmentRent save(ApartmentRent apartmentRent) {
@@ -45,7 +46,9 @@ public class ApartmentRentService {
     }
 
     /**
-     *  get all the apartmentRents.
+     *  Get all the apartmentRents.
+     *  
+     *  @param pageable the pagination information
      *  @return the list of entities
      */
     @Transactional(readOnly = true) 
@@ -56,7 +59,9 @@ public class ApartmentRentService {
     }
 
     /**
-     *  get one apartmentRent by id.
+     *  Get one apartmentRent by id.
+     *
+     *  @param id the id of the entity
      *  @return the entity
      */
     @Transactional(readOnly = true) 
@@ -67,7 +72,9 @@ public class ApartmentRentService {
     }
 
     /**
-     *  delete the  apartmentRent by id.
+     *  Delete the  apartmentRent by id.
+     *  
+     *  @param id the id of the entity
      */
     public void delete(Long id) {
         log.debug("Request to delete ApartmentRent : {}", id);
@@ -76,15 +83,14 @@ public class ApartmentRentService {
     }
 
     /**
-     * search for the apartmentRent corresponding
-     * to the query.
+     * Search for the apartmentRent corresponding to the query.
+     *
+     *  @param query the query of the search
+     *  @return the list of entities
      */
-    @Transactional(readOnly = true) 
-    public List<ApartmentRent> search(String query) {
-        
-        log.debug("REST request to search ApartmentRents for query {}", query);
-        return StreamSupport
-            .stream(apartmentRentSearchRepository.search(queryStringQuery(query)).spliterator(), false)
-            .collect(Collectors.toList());
+    @Transactional(readOnly = true)
+    public Page<ApartmentRent> search(String query, Pageable pageable) {
+        log.debug("Request to search for a page of ApartmentRents for query {}", query);
+        return apartmentRentSearchRepository.search(queryStringQuery(query), pageable);
     }
 }

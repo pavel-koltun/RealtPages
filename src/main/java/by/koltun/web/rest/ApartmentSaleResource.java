@@ -39,9 +39,13 @@ public class ApartmentSaleResource {
     private ApartmentSaleService apartmentSaleService;
     
     /**
-     * POST  /apartmentSales -> Create a new apartmentSale.
+     * POST  /apartment-sales : Create a new apartmentSale.
+     *
+     * @param apartmentSale the apartmentSale to create
+     * @return the ResponseEntity with status 201 (Created) and with body the new apartmentSale, or with status 400 (Bad Request) if the apartmentSale has already an ID
+     * @throws URISyntaxException if the Location URI syntax is incorrect
      */
-    @RequestMapping(value = "/apartmentSales",
+    @RequestMapping(value = "/apartment-sales",
         method = RequestMethod.POST,
         produces = MediaType.APPLICATION_JSON_VALUE)
     @Timed
@@ -51,15 +55,21 @@ public class ApartmentSaleResource {
             return ResponseEntity.badRequest().headers(HeaderUtil.createFailureAlert("apartmentSale", "idexists", "A new apartmentSale cannot already have an ID")).body(null);
         }
         ApartmentSale result = apartmentSaleService.save(apartmentSale);
-        return ResponseEntity.created(new URI("/api/apartmentSales/" + result.getId()))
+        return ResponseEntity.created(new URI("/api/apartment-sales/" + result.getId()))
             .headers(HeaderUtil.createEntityCreationAlert("apartmentSale", result.getId().toString()))
             .body(result);
     }
 
     /**
-     * PUT  /apartmentSales -> Updates an existing apartmentSale.
+     * PUT  /apartment-sales : Updates an existing apartmentSale.
+     *
+     * @param apartmentSale the apartmentSale to update
+     * @return the ResponseEntity with status 200 (OK) and with body the updated apartmentSale,
+     * or with status 400 (Bad Request) if the apartmentSale is not valid,
+     * or with status 500 (Internal Server Error) if the apartmentSale couldnt be updated
+     * @throws URISyntaxException if the Location URI syntax is incorrect
      */
-    @RequestMapping(value = "/apartmentSales",
+    @RequestMapping(value = "/apartment-sales",
         method = RequestMethod.PUT,
         produces = MediaType.APPLICATION_JSON_VALUE)
     @Timed
@@ -75,9 +85,13 @@ public class ApartmentSaleResource {
     }
 
     /**
-     * GET  /apartmentSales -> get all the apartmentSales.
+     * GET  /apartment-sales : get all the apartmentSales.
+     *
+     * @param pageable the pagination information
+     * @return the ResponseEntity with status 200 (OK) and the list of apartmentSales in body
+     * @throws URISyntaxException if there is an error to generate the pagination HTTP headers
      */
-    @RequestMapping(value = "/apartmentSales",
+    @RequestMapping(value = "/apartment-sales",
         method = RequestMethod.GET,
         produces = MediaType.APPLICATION_JSON_VALUE)
     @Timed
@@ -85,14 +99,17 @@ public class ApartmentSaleResource {
         throws URISyntaxException {
         log.debug("REST request to get a page of ApartmentSales");
         Page<ApartmentSale> page = apartmentSaleService.findAll(pageable); 
-        HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(page, "/api/apartmentSales");
+        HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(page, "/api/apartment-sales");
         return new ResponseEntity<>(page.getContent(), headers, HttpStatus.OK);
     }
 
     /**
-     * GET  /apartmentSales/:id -> get the "id" apartmentSale.
+     * GET  /apartment-sales/:id : get the "id" apartmentSale.
+     *
+     * @param id the id of the apartmentSale to retrieve
+     * @return the ResponseEntity with status 200 (OK) and with body the apartmentSale, or with status 404 (Not Found)
      */
-    @RequestMapping(value = "/apartmentSales/{id}",
+    @RequestMapping(value = "/apartment-sales/{id}",
         method = RequestMethod.GET,
         produces = MediaType.APPLICATION_JSON_VALUE)
     @Timed
@@ -107,9 +124,12 @@ public class ApartmentSaleResource {
     }
 
     /**
-     * DELETE  /apartmentSales/:id -> delete the "id" apartmentSale.
+     * DELETE  /apartment-sales/:id : delete the "id" apartmentSale.
+     *
+     * @param id the id of the apartmentSale to delete
+     * @return the ResponseEntity with status 200 (OK)
      */
-    @RequestMapping(value = "/apartmentSales/{id}",
+    @RequestMapping(value = "/apartment-sales/{id}",
         method = RequestMethod.DELETE,
         produces = MediaType.APPLICATION_JSON_VALUE)
     @Timed
@@ -120,15 +140,22 @@ public class ApartmentSaleResource {
     }
 
     /**
-     * SEARCH  /_search/apartmentSales/:query -> search for the apartmentSale corresponding
+     * SEARCH  /_search/apartment-sales?query=:query : search for the apartmentSale corresponding
      * to the query.
+     *
+     * @param query the query of the apartmentSale search
+     * @return the result of the search
      */
-    @RequestMapping(value = "/_search/apartmentSales/{query:.+}",
+    @RequestMapping(value = "/_search/apartment-sales",
         method = RequestMethod.GET,
         produces = MediaType.APPLICATION_JSON_VALUE)
     @Timed
-    public List<ApartmentSale> searchApartmentSales(@PathVariable String query) {
-        log.debug("Request to search ApartmentSales for query {}", query);
-        return apartmentSaleService.search(query);
+    public ResponseEntity<List<ApartmentSale>> searchApartmentSales(@RequestParam String query, Pageable pageable)
+        throws URISyntaxException {
+        log.debug("REST request to search for a page of ApartmentSales for query {}", query);
+        Page<ApartmentSale> page = apartmentSaleService.search(query, pageable);
+        HttpHeaders headers = PaginationUtil.generateSearchPaginationHttpHeaders(query, page, "/api/_search/apartment-sales");
+        return new ResponseEntity<>(page.getContent(), headers, HttpStatus.OK);
     }
+
 }

@@ -1,0 +1,172 @@
+
+<form name="editForm" role="form" novalidate ng-submit="vm.save()" show-validation>
+
+    <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true"
+                ng-click="vm.clear()">&times;</button>
+        <h4 class="modal-title" id="myApartmentSaleLabel" translate="onlinerRealtPagesApp.apartmentSale.home.createOrEditLabel">Create or edit a ApartmentSale</h4>
+    </div>
+    <div class="modal-body">
+        <jhi-alert-error></jhi-alert-error>
+        <div class="form-group">
+            <label for="id" translate="global.field.id">ID</label>
+            <input type="text" class="form-control" id="id" name="id"
+                    ng-model="vm.apartmentSale.id" readonly />
+        </div>
+        <div class="form-group">
+            <label class="control-label" translate="onlinerRealtPagesApp.apartmentSale.resale" for="field_resale">Resale</label>
+            <input type="checkbox" class="form-control" name="resale" id="field_resale"
+                    ng-model="vm.apartmentSale.resale"
+                     />
+            <div ng-show="editForm.resale.$invalid">
+                <p class="help-block"
+                    ng-show="editForm.resale.$error.required" translate="entity.validation.required">
+                    This field is required.
+                </p>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="control-label" translate="onlinerRealtPagesApp.apartmentSale.rooms" for="field_rooms">Rooms</label>
+            <input type="number" class="form-control" name="rooms" id="field_rooms"
+                    ng-model="vm.apartmentSale.rooms"
+                    required min="0" />
+            <div ng-show="editForm.rooms.$invalid">
+                <p class="help-block"
+                    ng-show="editForm.rooms.$error.required" translate="entity.validation.required">
+                    This field is required.
+                </p>
+                <p class="help-block"
+                    ng-show="editForm.rooms.$error.min" translate="entity.validation.min" translate-value-min="0">
+                    This field should be more than 0.
+                </p>
+                <p class="help-block"
+                    ng-show="editForm.rooms.$error.number" translate="entity.validation.number">
+                    This field should be a number.
+                </p>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="control-label" translate="onlinerRealtPagesApp.apartmentSale.floor" for="field_floor">Floor</label>
+            <input type="number" class="form-control" name="floor" id="field_floor"
+                    ng-model="vm.apartmentSale.floor"
+                    required min="0" />
+            <div ng-show="editForm.floor.$invalid">
+                <p class="help-block"
+                    ng-show="editForm.floor.$error.required" translate="entity.validation.required">
+                    This field is required.
+                </p>
+                <p class="help-block"
+                    ng-show="editForm.floor.$error.min" translate="entity.validation.min" translate-value-min="0">
+                    This field should be more than 0.
+                </p>
+                <p class="help-block"
+                    ng-show="editForm.floor.$error.number" translate="entity.validation.number">
+                    This field should be a number.
+                </p>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="control-label" translate="onlinerRealtPagesApp.apartmentSale.floors" for="field_floors">Floors</label>
+            <input type="number" class="form-control" name="floors" id="field_floors"
+                    ng-model="vm.apartmentSale.floors"
+                    required min="0" />
+            <div ng-show="editForm.floors.$invalid">
+                <p class="help-block"
+                    ng-show="editForm.floors.$error.required" translate="entity.validation.required">
+                    This field is required.
+                </p>
+                <p class="help-block"
+                    ng-show="editForm.floors.$error.min" translate="entity.validation.min" translate-value-min="0">
+                    This field should be more than 0.
+                </p>
+                <p class="help-block"
+                    ng-show="editForm.floors.$error.number" translate="entity.validation.number">
+                    This field should be a number.
+                </p>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="control-label" translate="onlinerRealtPagesApp.apartmentSale.areaTotal" for="field_areaTotal">AreaTotal</label>
+            <input type="number" class="form-control" name="areaTotal" id="field_areaTotal"
+                    ng-model="vm.apartmentSale.areaTotal"
+                    required min="0" />
+            <div ng-show="editForm.areaTotal.$invalid">
+                <p class="help-block"
+                    ng-show="editForm.areaTotal.$error.required" translate="entity.validation.required">
+                    This field is required.
+                </p>
+                <p class="help-block"
+                    ng-show="editForm.areaTotal.$error.min" translate="entity.validation.min" translate-value-min="0">
+                    This field should be more than 0.
+                </p>
+                <p class="help-block"
+                    ng-show="editForm.areaTotal.$error.number" translate="entity.validation.number">
+                    This field should be a number.
+                </p>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="control-label" translate="onlinerRealtPagesApp.apartmentSale.areaLiving" for="field_areaLiving">AreaLiving</label>
+            <input type="number" class="form-control" name="areaLiving" id="field_areaLiving"
+                    ng-model="vm.apartmentSale.areaLiving"
+                    required min="0" />
+            <div ng-show="editForm.areaLiving.$invalid">
+                <p class="help-block"
+                    ng-show="editForm.areaLiving.$error.required" translate="entity.validation.required">
+                    This field is required.
+                </p>
+                <p class="help-block"
+                    ng-show="editForm.areaLiving.$error.min" translate="entity.validation.min" translate-value-min="0">
+                    This field should be more than 0.
+                </p>
+                <p class="help-block"
+                    ng-show="editForm.areaLiving.$error.number" translate="entity.validation.number">
+                    This field should be a number.
+                </p>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="control-label" translate="onlinerRealtPagesApp.apartmentSale.areaKitchen" for="field_areaKitchen">AreaKitchen</label>
+            <input type="number" class="form-control" name="areaKitchen" id="field_areaKitchen"
+                    ng-model="vm.apartmentSale.areaKitchen"
+                    required min="0" />
+            <div ng-show="editForm.areaKitchen.$invalid">
+                <p class="help-block"
+                    ng-show="editForm.areaKitchen.$error.required" translate="entity.validation.required">
+                    This field is required.
+                </p>
+                <p class="help-block"
+                    ng-show="editForm.areaKitchen.$error.min" translate="entity.validation.min" translate-value-min="0">
+                    This field should be more than 0.
+                </p>
+                <p class="help-block"
+                    ng-show="editForm.areaKitchen.$error.number" translate="entity.validation.number">
+                    This field should be a number.
+                </p>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="control-label" translate="onlinerRealtPagesApp.apartmentSale.seller" for="field_seller">Seller</label>
+            <select class="form-control" name="seller" ng-model="vm.apartmentSale.seller" id="field_seller" required>
+                <option value="OWNER" translate="onlinerRealtPagesApp.SellerType.OWNER">OWNER</option>
+                <option value="AGENT" translate="onlinerRealtPagesApp.SellerType.AGENT">AGENT</option>
+                <option value="BUILDER" translate="onlinerRealtPagesApp.SellerType.BUILDER">BUILDER</option>
+            </select>
+            <div ng-show="editForm.seller.$invalid">
+                <p class="help-block"
+                    ng-show="editForm.seller.$error.required" translate="entity.validation.required">
+                    This field is required.
+                </p>
+            </div>
+        </div>
+
+    </div>
+    <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal" ng-click="vm.clear()">
+            <span class="glyphicon glyphicon-ban-circle"></span>&nbsp;<span translate="entity.action.cancel">Cancel</span>
+        </button>
+        <button type="submit" ng-disabled="editForm.$invalid || isSaving" class="btn btn-primary">
+            <span class="glyphicon glyphicon-save"></span>&nbsp;<span translate="entity.action.save">Save</span>
+        </button>
+    </div>
+</form>

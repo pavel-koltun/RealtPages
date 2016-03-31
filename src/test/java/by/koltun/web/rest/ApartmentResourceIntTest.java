@@ -1,6 +1,6 @@
 package by.koltun.web.rest;
 
-import by.koltun.Application;
+import by.koltun.OnlinerRealtPagesApp;
 import by.koltun.domain.Apartment;
 import by.koltun.repository.ApartmentRepository;
 import by.koltun.repository.search.ApartmentSearchRepository;
@@ -41,12 +41,12 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
  * @see ApartmentResource
  */
 @RunWith(SpringJUnit4ClassRunner.class)
-@SpringApplicationConfiguration(classes = Application.class)
+@SpringApplicationConfiguration(classes = OnlinerRealtPagesApp.class)
 @WebAppConfiguration
 @IntegrationTest
 public class ApartmentResourceIntTest {
 
-    private static final DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ISO_OFFSET_DATE_TIME.withZone(ZoneId.of("Z"));
+    private static final DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'").withZone(ZoneId.of("Z"));
 
 
     private static final Long DEFAULT_APARTMENT_ID = 1L;
@@ -91,6 +91,7 @@ public class ApartmentResourceIntTest {
 
     @Before
     public void initTest() {
+        apartmentSearchRepository.deleteAll();
         apartment = new Apartment();
         apartment.setApartmentId(DEFAULT_APARTMENT_ID);
         apartment.setCreated(DEFAULT_CREATED);
@@ -118,6 +119,10 @@ public class ApartmentResourceIntTest {
         assertThat(testApartment.getCreated()).isEqualTo(DEFAULT_CREATED);
         assertThat(testApartment.getUpdated()).isEqualTo(DEFAULT_UPDATED);
         assertThat(testApartment.getUrl()).isEqualTo(DEFAULT_URL);
+
+        // Validate the Apartment in ElasticSearch
+        Apartment apartmentEs = apartmentSearchRepository.findOne(testApartment.getId());
+        assertThat(apartmentEs).isEqualToComparingFieldByField(testApartment);
     }
 
     @Test
@@ -221,18 +226,20 @@ public class ApartmentResourceIntTest {
     public void updateApartment() throws Exception {
         // Initialize the database
         apartmentRepository.saveAndFlush(apartment);
-
-		int databaseSizeBeforeUpdate = apartmentRepository.findAll().size();
+        apartmentSearchRepository.save(apartment);
+        int databaseSizeBeforeUpdate = apartmentRepository.findAll().size();
 
         // Update the apartment
-        apartment.setApartmentId(UPDATED_APARTMENT_ID);
-        apartment.setCreated(UPDATED_CREATED);
-        apartment.setUpdated(UPDATED_UPDATED);
-        apartment.setUrl(UPDATED_URL);
+        Apartment updatedApartment = new Apartment();
+        updatedApartment.setId(apartment.getId());
+        updatedApartment.setApartmentId(UPDATED_APARTMENT_ID);
+        updatedApartment.setCreated(UPDATED_CREATED);
+        updatedApartment.setUpdated(UPDATED_UPDATED);
+        updatedApartment.setUrl(UPDATED_URL);
 
         restApartmentMockMvc.perform(put("/api/apartments")
                 .contentType(TestUtil.APPLICATION_JSON_UTF8)
-                .content(TestUtil.convertObjectToJsonBytes(apartment)))
+                .content(TestUtil.convertObjectToJsonBytes(updatedApartment)))
                 .andExpect(status().isOk());
 
         // Validate the Apartment in the database
@@ -243,6 +250,10 @@ public class ApartmentResourceIntTest {
         assertThat(testApartment.getCreated()).isEqualTo(UPDATED_CREATED);
         assertThat(testApartment.getUpdated()).isEqualTo(UPDATED_UPDATED);
         assertThat(testApartment.getUrl()).isEqualTo(UPDATED_URL);
+
+        // Validate the Apartment in ElasticSearch
+        Apartment apartmentEs = apartmentSearchRepository.findOne(testApartment.getId());
+        assertThat(apartmentEs).isEqualToComparingFieldByField(testApartment);
     }
 
     @Test
@@ -250,16 +261,38 @@ public class ApartmentResourceIntTest {
     public void deleteApartment() throws Exception {
         // Initialize the database
         apartmentRepository.saveAndFlush(apartment);
-
-		int databaseSizeBeforeDelete = apartmentRepository.findAll().size();
+        apartmentSearchRepository.save(apartment);
+        int databaseSizeBeforeDelete = apartmentRepository.findAll().size();
 
         // Get the apartment
         restApartmentMockMvc.perform(delete("/api/apartments/{id}", apartment.getId())
                 .accept(TestUtil.APPLICATION_JSON_UTF8))
                 .andExpect(status().isOk());
 
+        // Validate ElasticSearch is empty
+        boolean apartmentExistsInEs = apartmentSearchRepository.exists(apartment.getId());
+        assertThat(apartmentExistsInEs).isFalse();
+
         // Validate the database is empty
         List<Apartment> apartments = apartmentRepository.findAll();
         assertThat(apartments).hasSize(databaseSizeBeforeDelete - 1);
+    }
+
+    @Test
+    @Transactional
+    public void searchApartment() throws Exception {
+        // Initialize the database
+        apartmentRepository.saveAndFlush(apartment);
+        apartmentSearchRepository.save(apartment);
+
+        // Search the apartment
+        restApartmentMockMvc.perform(get("/api/_search/apartments?query=id:" + apartment.getId()))
+            .andExpect(status().isOk())
+            .andExpect(content().contentType(MediaType.APPLICATION_JSON))
+            .andExpect(jsonPath("$.[*].id").value(hasItem(apartment.getId().intValue())))
+            .andExpect(jsonPath("$.[*].apartmentId").value(hasItem(DEFAULT_APARTMENT_ID.intValue())))
+            .andExpect(jsonPath("$.[*].created").value(hasItem(DEFAULT_CREATED_STR)))
+            .andExpect(jsonPath("$.[*].updated").value(hasItem(DEFAULT_UPDATED_STR)))
+            .andExpect(jsonPath("$.[*].url").value(hasItem(DEFAULT_URL.toString())));
     }
 }

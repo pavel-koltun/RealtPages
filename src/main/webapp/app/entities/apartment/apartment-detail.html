@@ -1,0 +1,38 @@
+
+<div>
+    <h2><span translate="onlinerRealtPagesApp.apartment.detail.title">Apartment</span> {{vm.apartment.id}}</h2>
+    <hr>
+    <dl class="dl-horizontal">
+        <dt><span translate="onlinerRealtPagesApp.apartment.apartmentId">ApartmentId</dt></dt>
+        <dd>
+            <span>{{vm.apartment.apartmentId}}<span>
+        </dd>
+        <hr>
+        <dt><span translate="onlinerRealtPagesApp.apartment.created">Created</dt></dt>
+        <dd>
+            <span>{{vm.apartment.created | date:'medium'}}</span>
+        </dd>
+        <hr>
+        <dt><span translate="onlinerRealtPagesApp.apartment.updated">Updated</dt></dt>
+        <dd>
+            <span>{{vm.apartment.updated | date:'medium'}}</span>
+        </dd>
+        <hr>
+        <dt><span translate="onlinerRealtPagesApp.apartment.url">Url</dt></dt>
+        <dd>
+            <span>{{vm.apartment.url}}<span>
+        </dd>
+        <hr>
+        <dt><span translate="onlinerRealtPagesApp.apartment.location">location</span></dt>
+        <dd>
+            <a ui-sref="location-detail({id:vm.apartment.location.id})">{{vm.apartment.location.id}}</a>
+        </dd>
+        <hr>
+    </dl>
+
+    <button type="submit"
+            onclick="window.history.back()"
+            class="btn btn-info">
+        <span class="glyphicon glyphicon-arrow-left"></span>&nbsp;<span translate="entity.action.back"> Back</span>
+    </button>
+</div>

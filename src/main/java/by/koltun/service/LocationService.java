@@ -12,7 +12,6 @@ import org.springframework.stereotype.Service;
 
 import javax.inject.Inject;
 import java.util.List;
-import java.util.Optional;
 import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
 
@@ -35,6 +34,8 @@ public class LocationService {
     
     /**
      * Save a location.
+     * 
+     * @param location the entity to save
      * @return the persisted entity
      */
     public Location save(Location location) {
@@ -45,7 +46,9 @@ public class LocationService {
     }
 
     /**
-     *  get all the locations.
+     *  Get all the locations.
+     *  
+     *  @param pageable the pagination information
      *  @return the list of entities
      */
     @Transactional(readOnly = true) 
@@ -56,7 +59,9 @@ public class LocationService {
     }
 
     /**
-     *  get one location by id.
+     *  Get one location by id.
+     *
+     *  @param id the id of the entity
      *  @return the entity
      */
     @Transactional(readOnly = true) 
@@ -67,7 +72,9 @@ public class LocationService {
     }
 
     /**
-     *  delete the  location by id.
+     *  Delete the  location by id.
+     *  
+     *  @param id the id of the entity
      */
     public void delete(Long id) {
         log.debug("Request to delete Location : {}", id);
@@ -76,15 +83,14 @@ public class LocationService {
     }
 
     /**
-     * search for the location corresponding
-     * to the query.
+     * Search for the location corresponding to the query.
+     *
+     *  @param query the query of the search
+     *  @return the list of entities
      */
-    @Transactional(readOnly = true) 
-    public List<Location> search(String query) {
-        
-        log.debug("REST request to search Locations for query {}", query);
-        return StreamSupport
-            .stream(locationSearchRepository.search(queryStringQuery(query)).spliterator(), false)
-            .collect(Collectors.toList());
+    @Transactional(readOnly = true)
+    public Page<Location> search(String query, Pageable pageable) {
+        log.debug("Request to search for a page of Locations for query {}", query);
+        return locationSearchRepository.search(queryStringQuery(query), pageable);
     }
 }

@@ -2,7 +2,7 @@
 
 describe('Controller Tests', function() {
 
-    describe('Price Detail Controller', function() {
+    describe('Price Management Detail Controller', function() {
         var $scope, $rootScope;
         var MockEntity, MockPrice, MockApartment;
         var createController;
@@ -30,7 +30,7 @@ describe('Controller Tests', function() {
 
         describe('Root Scope Listening', function() {
             it('Unregisters root scope listener upon scope destruction', function() {
-                var eventType = 'onlinerrealtpagesApp:priceUpdate';
+                var eventType = 'onlinerRealtPagesApp:priceUpdate';
 
                 createController();
                 expect($rootScope.$$listenerCount[eventType]).toEqual(1);

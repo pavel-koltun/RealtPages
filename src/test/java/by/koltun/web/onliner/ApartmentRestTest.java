@@ -1,6 +1,6 @@
 package by.koltun.web.onliner;
 
-import by.koltun.Application;
+import by.koltun.OnlinerRealtPagesApp;
 import by.koltun.web.rest.to.*;
 import by.koltun.web.rest.to.rent.ApartmentRent;
 import by.koltun.web.rest.to.rent.ApartmentRentPage;
@@ -30,7 +30,7 @@ import static org.junit.Assert.*;
  * Tests to check work with remote service
  */
 @RunWith(SpringJUnit4ClassRunner.class)
-@SpringApplicationConfiguration(classes = Application.class)
+@SpringApplicationConfiguration(classes = OnlinerRealtPagesApp.class)
 @WebAppConfiguration
 @IntegrationTest
 public class ApartmentRestTest {

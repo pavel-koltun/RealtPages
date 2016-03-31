@@ -1,6 +1,7 @@
 package by.koltun.repository;
 
-import by.koltun.Application;
+import by.koltun.OnlinerRealtPagesApp;
+import by.koltun.OnlinerRealtPagesApp;
 import by.koltun.domain.Location;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -19,7 +20,7 @@ import static org.junit.Assert.*;
  * {@link LocationRepository} test
  */
 @RunWith(SpringJUnit4ClassRunner.class)
-@SpringApplicationConfiguration(classes = Application.class)
+@SpringApplicationConfiguration(classes = OnlinerRealtPagesApp.class)
 @WebAppConfiguration
 @IntegrationTest
 @Transactional

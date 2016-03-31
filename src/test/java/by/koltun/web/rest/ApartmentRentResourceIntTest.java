@@ -1,9 +1,10 @@
 package by.koltun.web.rest;
 
-import by.koltun.Application;
+import by.koltun.OnlinerRealtPagesApp;
 import by.koltun.domain.ApartmentRent;
 import by.koltun.repository.ApartmentRentRepository;
 import by.koltun.service.ApartmentRentService;
+import by.koltun.repository.search.ApartmentRentSearchRepository;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -38,12 +39,12 @@ import by.koltun.domain.enumeration.RentType;
  * @see ApartmentRentResource
  */
 @RunWith(SpringJUnit4ClassRunner.class)
-@SpringApplicationConfiguration(classes = Application.class)
+@SpringApplicationConfiguration(classes = OnlinerRealtPagesApp.class)
 @WebAppConfiguration
 @IntegrationTest
 public class ApartmentRentResourceIntTest {
 
-    
+
     private static final RentType DEFAULT_TYPE = RentType.ROOM;
     private static final RentType UPDATED_TYPE = RentType.ONE_ROOM;
 
@@ -55,6 +56,9 @@ public class ApartmentRentResourceIntTest {
 
     @Inject
     private ApartmentRentService apartmentRentService;
+
+    @Inject
+    private ApartmentRentSearchRepository apartmentRentSearchRepository;
 
     @Inject
     private MappingJackson2HttpMessageConverter jacksonMessageConverter;
@@ -78,6 +82,7 @@ public class ApartmentRentResourceIntTest {
 
     @Before
     public void initTest() {
+        apartmentRentSearchRepository.deleteAll();
         apartmentRent = new ApartmentRent();
         apartmentRent.setType(DEFAULT_TYPE);
         apartmentRent.setOwner(DEFAULT_OWNER);
@@ -90,7 +95,7 @@ public class ApartmentRentResourceIntTest {
 
         // Create the ApartmentRent
 
-        restApartmentRentMockMvc.perform(post("/api/apartmentRents")
+        restApartmentRentMockMvc.perform(post("/api/apartment-rents")
                 .contentType(TestUtil.APPLICATION_JSON_UTF8)
                 .content(TestUtil.convertObjectToJsonBytes(apartmentRent)))
                 .andExpect(status().isCreated());
@@ -101,6 +106,10 @@ public class ApartmentRentResourceIntTest {
         ApartmentRent testApartmentRent = apartmentRents.get(apartmentRents.size() - 1);
         assertThat(testApartmentRent.getType()).isEqualTo(DEFAULT_TYPE);
         assertThat(testApartmentRent.getOwner()).isEqualTo(DEFAULT_OWNER);
+
+        // Validate the ApartmentRent in ElasticSearch
+        ApartmentRent apartmentRentEs = apartmentRentSearchRepository.findOne(testApartmentRent.getId());
+        assertThat(apartmentRentEs).isEqualToComparingFieldByField(testApartmentRent);
     }
 
     @Test
@@ -112,7 +121,7 @@ public class ApartmentRentResourceIntTest {
 
         // Create the ApartmentRent, which fails.
 
-        restApartmentRentMockMvc.perform(post("/api/apartmentRents")
+        restApartmentRentMockMvc.perform(post("/api/apartment-rents")
                 .contentType(TestUtil.APPLICATION_JSON_UTF8)
                 .content(TestUtil.convertObjectToJsonBytes(apartmentRent)))
                 .andExpect(status().isBadRequest());
@@ -130,7 +139,7 @@ public class ApartmentRentResourceIntTest {
 
         // Create the ApartmentRent, which fails.
 
-        restApartmentRentMockMvc.perform(post("/api/apartmentRents")
+        restApartmentRentMockMvc.perform(post("/api/apartment-rents")
                 .contentType(TestUtil.APPLICATION_JSON_UTF8)
                 .content(TestUtil.convertObjectToJsonBytes(apartmentRent)))
                 .andExpect(status().isBadRequest());
@@ -146,7 +155,7 @@ public class ApartmentRentResourceIntTest {
         apartmentRentRepository.saveAndFlush(apartmentRent);
 
         // Get all the apartmentRents
-        restApartmentRentMockMvc.perform(get("/api/apartmentRents?sort=id,desc"))
+        restApartmentRentMockMvc.perform(get("/api/apartment-rents?sort=id,desc"))
                 .andExpect(status().isOk())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON))
                 .andExpect(jsonPath("$.[*].id").value(hasItem(apartmentRent.getId().intValue())))
@@ -161,7 +170,7 @@ public class ApartmentRentResourceIntTest {
         apartmentRentRepository.saveAndFlush(apartmentRent);
 
         // Get the apartmentRent
-        restApartmentRentMockMvc.perform(get("/api/apartmentRents/{id}", apartmentRent.getId()))
+        restApartmentRentMockMvc.perform(get("/api/apartment-rents/{id}", apartmentRent.getId()))
             .andExpect(status().isOk())
             .andExpect(content().contentType(MediaType.APPLICATION_JSON))
             .andExpect(jsonPath("$.id").value(apartmentRent.getId().intValue()))
@@ -173,7 +182,7 @@ public class ApartmentRentResourceIntTest {
     @Transactional
     public void getNonExistingApartmentRent() throws Exception {
         // Get the apartmentRent
-        restApartmentRentMockMvc.perform(get("/api/apartmentRents/{id}", Long.MAX_VALUE))
+        restApartmentRentMockMvc.perform(get("/api/apartment-rents/{id}", Long.MAX_VALUE))
                 .andExpect(status().isNotFound());
     }
 
@@ -181,17 +190,19 @@ public class ApartmentRentResourceIntTest {
     @Transactional
     public void updateApartmentRent() throws Exception {
         // Initialize the database
-        apartmentRentRepository.saveAndFlush(apartmentRent);
+        apartmentRentService.save(apartmentRent);
 
-		int databaseSizeBeforeUpdate = apartmentRentRepository.findAll().size();
+        int databaseSizeBeforeUpdate = apartmentRentRepository.findAll().size();
 
         // Update the apartmentRent
-        apartmentRent.setType(UPDATED_TYPE);
-        apartmentRent.setOwner(UPDATED_OWNER);
+        ApartmentRent updatedApartmentRent = new ApartmentRent();
+        updatedApartmentRent.setId(apartmentRent.getId());
+        updatedApartmentRent.setType(UPDATED_TYPE);
+        updatedApartmentRent.setOwner(UPDATED_OWNER);
 
-        restApartmentRentMockMvc.perform(put("/api/apartmentRents")
+        restApartmentRentMockMvc.perform(put("/api/apartment-rents")
                 .contentType(TestUtil.APPLICATION_JSON_UTF8)
-                .content(TestUtil.convertObjectToJsonBytes(apartmentRent)))
+                .content(TestUtil.convertObjectToJsonBytes(updatedApartmentRent)))
                 .andExpect(status().isOk());
 
         // Validate the ApartmentRent in the database
@@ -200,23 +211,46 @@ public class ApartmentRentResourceIntTest {
         ApartmentRent testApartmentRent = apartmentRents.get(apartmentRents.size() - 1);
         assertThat(testApartmentRent.getType()).isEqualTo(UPDATED_TYPE);
         assertThat(testApartmentRent.getOwner()).isEqualTo(UPDATED_OWNER);
+
+        // Validate the ApartmentRent in ElasticSearch
+        ApartmentRent apartmentRentEs = apartmentRentSearchRepository.findOne(testApartmentRent.getId());
+        assertThat(apartmentRentEs).isEqualToComparingFieldByField(testApartmentRent);
     }
 
     @Test
     @Transactional
     public void deleteApartmentRent() throws Exception {
         // Initialize the database
-        apartmentRentRepository.saveAndFlush(apartmentRent);
+        apartmentRentService.save(apartmentRent);
 
-		int databaseSizeBeforeDelete = apartmentRentRepository.findAll().size();
+        int databaseSizeBeforeDelete = apartmentRentRepository.findAll().size();
 
         // Get the apartmentRent
-        restApartmentRentMockMvc.perform(delete("/api/apartmentRents/{id}", apartmentRent.getId())
+        restApartmentRentMockMvc.perform(delete("/api/apartment-rents/{id}", apartmentRent.getId())
                 .accept(TestUtil.APPLICATION_JSON_UTF8))
                 .andExpect(status().isOk());
+
+        // Validate ElasticSearch is empty
+        boolean apartmentRentExistsInEs = apartmentRentSearchRepository.exists(apartmentRent.getId());
+        assertThat(apartmentRentExistsInEs).isFalse();
 
         // Validate the database is empty
         List<ApartmentRent> apartmentRents = apartmentRentRepository.findAll();
         assertThat(apartmentRents).hasSize(databaseSizeBeforeDelete - 1);
+    }
+
+    @Test
+    @Transactional
+    public void searchApartmentRent() throws Exception {
+        // Initialize the database
+        apartmentRentService.save(apartmentRent);
+
+        // Search the apartmentRent
+        restApartmentRentMockMvc.perform(get("/api/_search/apartment-rents?query=id:" + apartmentRent.getId()))
+            .andExpect(status().isOk())
+            .andExpect(content().contentType(MediaType.APPLICATION_JSON))
+            .andExpect(jsonPath("$.[*].id").value(hasItem(apartmentRent.getId().intValue())))
+            .andExpect(jsonPath("$.[*].type").value(hasItem(DEFAULT_TYPE.toString())))
+            .andExpect(jsonPath("$.[*].owner").value(hasItem(DEFAULT_OWNER.booleanValue())));
     }
 }

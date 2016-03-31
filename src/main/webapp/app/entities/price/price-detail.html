@@ -1,0 +1,33 @@
+
+<div>
+    <h2><span translate="onlinerRealtPagesApp.price.detail.title">Price</span> {{vm.price.id}}</h2>
+    <hr>
+    <dl class="dl-horizontal">
+        <dt><span translate="onlinerRealtPagesApp.price.priceUsd">PriceUsd</dt></dt>
+        <dd>
+            <span>{{vm.price.priceUsd}}<span>
+        </dd>
+        <hr>
+        <dt><span translate="onlinerRealtPagesApp.price.priceRuble">PriceRuble</dt></dt>
+        <dd>
+            <span>{{vm.price.priceRuble}}<span>
+        </dd>
+        <hr>
+        <dt><span translate="onlinerRealtPagesApp.price.created">Created</dt></dt>
+        <dd>
+            <span>{{vm.price.created | date:'medium'}}</span>
+        </dd>
+        <hr>
+        <dt><span translate="onlinerRealtPagesApp.price.apartment">apartment</span></dt>
+        <dd>
+            <a ui-sref="apartment-detail({id:vm.price.apartment.id})">{{vm.price.apartment.id}}</a>
+        </dd>
+        <hr>
+    </dl>
+
+    <button type="submit"
+            onclick="window.history.back()"
+            class="btn btn-info">
+        <span class="glyphicon glyphicon-arrow-left"></span>&nbsp;<span translate="entity.action.back"> Back</span>
+    </button>
+</div>

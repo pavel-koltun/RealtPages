@@ -2,7 +2,7 @@
 
 describe('Controller Tests', function() {
 
-    describe('Apartment Detail Controller', function() {
+    describe('Apartment Management Detail Controller', function() {
         var $scope, $rootScope;
         var MockEntity, MockApartment, MockLocation, MockPrice;
         var createController;
@@ -32,7 +32,7 @@ describe('Controller Tests', function() {
 
         describe('Root Scope Listening', function() {
             it('Unregisters root scope listener upon scope destruction', function() {
-                var eventType = 'onlinerrealtpagesApp:apartmentUpdate';
+                var eventType = 'onlinerRealtPagesApp:apartmentUpdate';
 
                 createController();
                 expect($rootScope.$$listenerCount[eventType]).toEqual(1);

@@ -12,8 +12,7 @@
 
 spring:
     datasource:
-        driver-class-name: org.h2.jdbcx.JdbcDataSource
-        url: jdbc:h2:mem:OnlinerRealtPagesTest;DB_CLOSE_DELAY=-1
+        url: jdbc:h2:mem:OnlinerRealtPages;DB_CLOSE_DELAY=-1
         name:
         username:
         password:
@@ -29,7 +28,7 @@ spring:
             hibernate.cache.use_second_level_cache: false
             hibernate.cache.use_query_cache: false
             hibernate.generate_statistics: true
-            hibernate.hbm2ddl.auto: create-drop
+            hibernate.hbm2ddl.auto: validate
     data:
         elasticsearch:
             cluster-name:
@@ -73,9 +72,6 @@ jhipster:
                 secret: mySecretOAuthSecret
                 # Token is valid 30 minutes
                 tokenValidityInSeconds: 1800
-        rememberme:
-            # security key (this key should be unique for your application, and kept secret)
-            key: 5053ec4d7d0c15a676966f29e900a571be12e444
     metrics: # DropWizard Metrics configuration, used by MetricsConfiguration
         jmx.enabled: true
     swagger:
@@ -83,6 +79,8 @@ jhipster:
         description: OnlinerRealtPages API documentation
         version: 0.0.1
         termsOfServiceUrl:
-        contact:
+        contactName:
+        contactUrl:
+        contactEmail:
         license:
         licenseUrl:

@@ -6,8 +6,7 @@ import by.koltun.config.JHipsterProperties;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.boot.SpringApplication;
-import org.springframework.boot.actuate.autoconfigure.MetricFilterAutoConfiguration;
-import org.springframework.boot.actuate.autoconfigure.MetricRepositoryAutoConfiguration;
+import org.springframework.boot.actuate.autoconfigure.*;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.boot.autoconfigure.liquibase.LiquibaseProperties;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
@@ -18,7 +17,6 @@ import org.springframework.scheduling.annotation.EnableScheduling;
 
 import javax.annotation.PostConstruct;
 import javax.inject.Inject;
-import java.io.IOException;
 import java.net.InetAddress;
 import java.net.UnknownHostException;
 import java.util.Arrays;
@@ -28,24 +26,22 @@ import java.util.Collection;
 @EnableAutoConfiguration(exclude = { MetricFilterAutoConfiguration.class, MetricRepositoryAutoConfiguration.class })
 @EnableConfigurationProperties({ JHipsterProperties.class, LiquibaseProperties.class })
 @EnableScheduling
-public class Application {
+public class OnlinerRealtPagesApp {
 
-    private static final Logger log = LoggerFactory.getLogger(Application.class);
+    private static final Logger log = LoggerFactory.getLogger(OnlinerRealtPagesApp.class);
 
     @Inject
     private Environment env;
 
     /**
      * Initializes OnlinerRealtPages.
-     * <p/>
-     * Spring profiles can be configured with a program arguments --spring.profiles.active=your-active-profile
-     * <p/>
      * <p>
-     * You can find more information on how profiles work with JHipster on <a href="http://jhipster.github.io/profiles.html">http://jhipster.github.io/profiles.html</a>.
-     * </p>
+     * Spring profiles can be configured with a program arguments --spring.profiles.active=your-active-profile
+     * <p>
+     * You can find more information on how profiles work with JHipster on <a href="http://jhipster.github.io/profiles/">http://jhipster.github.io/profiles/</a>.
      */
     @PostConstruct
-    public void initApplication() throws IOException {
+    public void initApplication() {
         if (env.getActiveProfiles().length == 0) {
             log.warn("No Spring profile configured, running with default configuration");
         } else {
@@ -54,10 +50,6 @@ public class Application {
             if (activeProfiles.contains(Constants.SPRING_PROFILE_DEVELOPMENT) && activeProfiles.contains(Constants.SPRING_PROFILE_PRODUCTION)) {
                 log.error("You have misconfigured your application! " +
                     "It should not run with both the 'dev' and 'prod' profiles at the same time.");
-            }
-            if (activeProfiles.contains(Constants.SPRING_PROFILE_PRODUCTION) && activeProfiles.contains(Constants.SPRING_PROFILE_FAST)) {
-                log.error("You have misconfigured your application! " +
-                    "It should not run with both the 'prod' and 'fast' profiles at the same time.");
             }
             if (activeProfiles.contains(Constants.SPRING_PROFILE_DEVELOPMENT) && activeProfiles.contains(Constants.SPRING_PROFILE_CLOUD)) {
                 log.error("You have misconfigured your application! " +
@@ -68,15 +60,20 @@ public class Application {
 
     /**
      * Main method, used to run the application.
+     *
+     * @param args the command line arguments
+     * @throws UnknownHostException if the local host name could not be resolved into an address
      */
     public static void main(String[] args) throws UnknownHostException {
-        SpringApplication app = new SpringApplication(Application.class);
+        SpringApplication app = new SpringApplication(OnlinerRealtPagesApp.class);
         SimpleCommandLinePropertySource source = new SimpleCommandLinePropertySource(args);
         addDefaultProfile(app, source);
         Environment env = app.run(args).getEnvironment();
-        log.info("Access URLs:\n----------------------------------------------------------\n\t" +
+        log.info("\n----------------------------------------------------------\n\t" +
+                "Application '{}' is running! Access URLs:\n\t" +
                 "Local: \t\thttp://127.0.0.1:{}\n\t" +
                 "External: \thttp://{}:{}\n----------------------------------------------------------",
+            env.getProperty("spring.application.name"),
             env.getProperty("server.port"),
             InetAddress.getLocalHost().getHostAddress(),
             env.getProperty("server.port"));

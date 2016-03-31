@@ -1,0 +1,27 @@
+{
+    "onlinerRealtPagesApp": {
+        "apartment" : {
+            "home": {
+                "title": "Apartments",
+                "createLabel": "Создать новый Apartment",
+                "createOrEditLabel": "Создать или отредактировать Apartment",
+                "search": "Найти Apartment"
+            },
+            "created": "Новый Apartment создан с идентификатором {{ param }}",
+            "updated": "Apartment обновлен с идентификатором {{ param }}",
+            "deleted": "Apartment удален с идентификатором {{ param }}",
+            "delete": {
+                "question": "Вы уверены что хотите удалить Apartment {{ id }}?"
+            },
+            "detail": {
+                "title": "Apartment"
+            },
+            "apartmentId": "ApartmentId",
+            "created": "Created",
+            "updated": "Updated",
+            "url": "Url",
+            "location": "Location",
+            "prices": "Prices"
+        }
+    }
+}

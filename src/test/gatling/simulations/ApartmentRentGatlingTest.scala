@@ -35,7 +35,7 @@ class ApartmentRentGatlingTest extends Simulation {
         "Accept" -> """application/json"""
     )
 
-        val authorization_header = "Basic " + Base64.getEncoder.encodeToString("OnlinerRealtPagesapp:mySecretOAuthSecret".getBytes(StandardCharsets.UTF_8))
+    val authorization_header = "Basic " + Base64.getEncoder.encodeToString("OnlinerRealtPagesapp:mySecretOAuthSecret".getBytes(StandardCharsets.UTF_8))
 
     val headers_http_authentication = Map(
         "Content-Type" -> """application/x-www-form-urlencoded""",
@@ -52,7 +52,7 @@ class ApartmentRentGatlingTest extends Simulation {
         .exec(http("First unauthenticated request")
         .get("/api/account")
         .headers(headers_http)
-        .check(status.is(401)))
+        .check(status.is(401))).exitHereIfFailed
         .pause(10)
         .exec(http("Authentication")
         .post("/oauth/token")
@@ -64,7 +64,7 @@ class ApartmentRentGatlingTest extends Simulation {
         .formParam("client_secret", "mySecretOAuthSecret")
         .formParam("client_id", "OnlinerRealtPagesapp")
         .formParam("submit", "Login")
-        .check(jsonPath("$.access_token").saveAs("access_token")))
+        .check(jsonPath("$.access_token").saveAs("access_token"))).exitHereIfFailed
         .pause(1)
         .exec(http("Authenticated request")
         .get("/api/account")
@@ -73,16 +73,16 @@ class ApartmentRentGatlingTest extends Simulation {
         .pause(10)
         .repeat(2) {
             exec(http("Get all apartmentRents")
-            .get("/api/apartmentRents")
+            .get("/api/apartment-rents")
             .headers(headers_http_authenticated)
             .check(status.is(200)))
             .pause(10 seconds, 20 seconds)
             .exec(http("Create new apartmentRent")
-            .post("/api/apartmentRents")
+            .post("/api/apartment-rents")
             .headers(headers_http_authenticated)
             .body(StringBody("""{"id":null, "type":null, "owner":null}""")).asJSON
             .check(status.is(201))
-            .check(headerRegex("Location", "(.*)").saveAs("new_apartmentRent_url")))
+            .check(headerRegex("Location", "(.*)").saveAs("new_apartmentRent_url"))).exitHereIfFailed
             .pause(10)
             .repeat(5) {
                 exec(http("Get created apartmentRent")

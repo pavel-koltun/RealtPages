@@ -35,7 +35,7 @@ class PriceGatlingTest extends Simulation {
         "Accept" -> """application/json"""
     )
 
-        val authorization_header = "Basic " + Base64.getEncoder.encodeToString("OnlinerRealtPagesapp:mySecretOAuthSecret".getBytes(StandardCharsets.UTF_8))
+    val authorization_header = "Basic " + Base64.getEncoder.encodeToString("OnlinerRealtPagesapp:mySecretOAuthSecret".getBytes(StandardCharsets.UTF_8))
 
     val headers_http_authentication = Map(
         "Content-Type" -> """application/x-www-form-urlencoded""",
@@ -52,7 +52,7 @@ class PriceGatlingTest extends Simulation {
         .exec(http("First unauthenticated request")
         .get("/api/account")
         .headers(headers_http)
-        .check(status.is(401)))
+        .check(status.is(401))).exitHereIfFailed
         .pause(10)
         .exec(http("Authentication")
         .post("/oauth/token")
@@ -64,7 +64,7 @@ class PriceGatlingTest extends Simulation {
         .formParam("client_secret", "mySecretOAuthSecret")
         .formParam("client_id", "OnlinerRealtPagesapp")
         .formParam("submit", "Login")
-        .check(jsonPath("$.access_token").saveAs("access_token")))
+        .check(jsonPath("$.access_token").saveAs("access_token"))).exitHereIfFailed
         .pause(1)
         .exec(http("Authenticated request")
         .get("/api/account")
@@ -80,17 +80,17 @@ class PriceGatlingTest extends Simulation {
             .exec(http("Create new price")
             .post("/api/prices")
             .headers(headers_http_authenticated)
-            .body(StringBody("""{"id":null, "priceUsd":null, "priceRuble":null, "updated":"2020-01-01T00:00:00.000Z"}""")).asJSON
+            .body(StringBody("""{"id":null, "priceUsd":null, "priceRuble":null, "created":"2020-01-01T00:00:00.000Z"}""")).asJSON
             .check(status.is(201))
-            .check(headerRegex("Location", "(.*)").saveAs("new_price_url")))
+            .check(headerRegex("Location", "(.*)").saveAs("new_price_url"))).exitHereIfFailed
             .pause(10)
             .repeat(5) {
-                exec(http("Get updated price")
+                exec(http("Get created price")
                 .get("${new_price_url}")
                 .headers(headers_http_authenticated))
                 .pause(10)
             }
-            .exec(http("Delete updated price")
+            .exec(http("Delete created price")
             .delete("${new_price_url}")
             .headers(headers_http_authenticated))
             .pause(10)

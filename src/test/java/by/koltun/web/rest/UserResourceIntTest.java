@@ -1,6 +1,7 @@
 package by.koltun.web.rest;
 
-import by.koltun.Application;
+import by.koltun.OnlinerRealtPagesApp;
+import by.koltun.domain.User;
 import by.koltun.repository.UserRepository;
 import by.koltun.service.UserService;
 import org.junit.Before;
@@ -17,6 +18,8 @@ import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
 import javax.inject.Inject;
 
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
@@ -26,7 +29,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
  * @see UserResource
  */
 @RunWith(SpringJUnit4ClassRunner.class)
-@SpringApplicationConfiguration(classes = Application.class)
+@SpringApplicationConfiguration(classes = OnlinerRealtPagesApp.class)
 @WebAppConfiguration
 @IntegrationTest
 public class UserResourceIntTest {
@@ -62,4 +65,5 @@ public class UserResourceIntTest {
                 .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isNotFound());
     }
+
 }

@@ -1,0 +1,25 @@
+{
+    "onlinerRealtPagesApp": {
+        "price" : {
+            "home": {
+                "title": "Prices",
+                "createLabel": "Создать новый Price",
+                "createOrEditLabel": "Создать или отредактировать Price",
+                "search": "Найти Price"
+            },
+            "created": "Новый Price создан с идентификатором {{ param }}",
+            "updated": "Price обновлен с идентификатором {{ param }}",
+            "deleted": "Price удален с идентификатором {{ param }}",
+            "delete": {
+                "question": "Вы уверены что хотите удалить Price {{ id }}?"
+            },
+            "detail": {
+                "title": "Price"
+            },
+            "priceUsd": "PriceUsd",
+            "priceRuble": "PriceRuble",
+            "created": "Created",
+            "apartment": "Apartment"
+        }
+    }
+}

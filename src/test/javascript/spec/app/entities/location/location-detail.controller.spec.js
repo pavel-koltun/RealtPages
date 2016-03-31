@@ -2,7 +2,7 @@
 
 describe('Controller Tests', function() {
 
-    describe('Location Detail Controller', function() {
+    describe('Location Management Detail Controller', function() {
         var $scope, $rootScope;
         var MockEntity, MockLocation;
         var createController;
@@ -28,7 +28,7 @@ describe('Controller Tests', function() {
 
         describe('Root Scope Listening', function() {
             it('Unregisters root scope listener upon scope destruction', function() {
-                var eventType = 'onlinerrealtpagesApp:locationUpdate';
+                var eventType = 'onlinerRealtPagesApp:locationUpdate';
 
                 createController();
                 expect($rootScope.$$listenerCount[eventType]).toEqual(1);
